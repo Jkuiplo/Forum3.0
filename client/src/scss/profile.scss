@@ -1,0 +1,236 @@
+.main-profile-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.profile-container {
+  padding-top: 20px;
+
+  .profile-header {
+    position: relative;
+    margin-bottom: 20px;
+
+    .cover-photo {
+      height: 150px;
+      width: 100%;
+      background-color: var(--bg-secondary);
+      border-radius: 4px 4px 0 0;
+    }
+
+    .profile-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      margin-top: -40px;
+      position: relative;
+
+      .avatar-container {
+        .profile-avatar {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          border: 4px solid var(--bg-body);
+          background-color: var(--bg-secondary);
+        }
+      }
+
+      .profile-actions {
+        margin-top: 40px;
+      }
+    }
+
+    .profile-meta {
+      padding: 0 20px 20px;
+
+      .profile-username {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+      }
+
+      .profile-stats {
+        display: flex;
+        gap: 15px;
+        font-size: 14px;
+
+        .stat-item {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
+      }
+    }
+  }
+
+  .profile-content {
+    .profile-sidebar {
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid var(--bg-border);
+
+      .sidebar-section {
+        margin-bottom: 20px;
+
+        .sidebar-title {
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+
+        .sidebar-text {
+          font-size: 14px;
+          line-height: 1.4;
+        }
+
+        .trophies-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+
+          .trophy-item {
+            font-size: 13px;
+            padding: 5px 10px;
+            background-color: var(--bg-secondary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+        }
+
+        .moderated-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          li {
+            margin-bottom: 5px;
+
+            a {
+              text-decoration: none;
+              font-size: 14px;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .profile-posts {
+      .posts-header {
+        margin-bottom: 15px;
+
+        .nav-tabs {
+          border-bottom: 1px solid var(--bg-border);
+
+          .nav-link {
+            border: none;
+            color: var(--bg-text);
+            padding: 8px 16px;
+            font-size: 14px;
+
+            &.active {
+              color: var(--bg-primary);
+              border-bottom: 2px solid var(--bg-primary);
+              background-color: transparent;
+            }
+          }
+        }
+      }
+
+      .post-item {
+        display: flex;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        border: 1px solid var(--bg-border);
+
+        .post-votes {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 5px 10px 5px 5px;
+
+          .vote-btn {
+            background: none;
+            border: none;
+            color: var(--bg-text);
+            cursor: pointer;
+            padding: 2px;
+
+            &:hover {
+              color: var(--bg-primary);
+            }
+          }
+
+          .vote-count {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 3px 0;
+          }
+        }
+
+        .post-content {
+          flex: 1;
+
+          .post-meta {
+            font-size: 12px;
+            color: var(--bg-text);
+            opacity: 0.8;
+            margin-bottom: 5px;
+          }
+
+          .post-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+          }
+
+          .post-text {
+            font-size: 14px;
+            margin-bottom: 10px;
+          }
+
+          .post-actions {
+            display: flex;
+            gap: 15px;
+
+            .action-btn {
+              background: none;
+              border: none;
+              color: var(--bg-text);
+              font-size: 12px;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              cursor: pointer;
+
+              &:hover {
+                color: var(--bg-primary);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Dark mode specific styles */
+.dark-mode {
+  .profile-container {
+    .profile-sidebar,
+    .post-item {
+      background-color: var(--bg-card);
+      border-color: var(--bg-border);
+    }
+
+    .nav-tabs {
+      border-bottom-color: var(--bg-border);
+    }
+  }
+}
