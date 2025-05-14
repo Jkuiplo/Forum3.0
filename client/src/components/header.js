@@ -7,30 +7,30 @@ export function renderHeader() {
 	      <div class="row align-items-center">
 		<div class="col-md-2 col-sm-3 col-4 header-logo bg-body">
 		  <div class="d-flex align-items-center">
-		    <button class="sidebar-toggle me-2 bg-body bg-text">
+		    <button class="sidebar-toggle me-2 bg-body text-body">
 		      <i class="bi bi-list"></i>
 		    </button>
 		    <a href="#" class="d-flex align-items-center ">
-		      <span class="logo-text bg-text" id="logo">AIU Forum</span>
+		      <span class="logo-text text-body" id="logo">AIU Forum</span>
 		    </a>
 		  </div>
 		</div>
 
 		<div class="col-md-6 col-sm-5 col-8 header-search bg-body">
 		  <div class="search-container bg-body">
-		    <i class="bi bi-search search-icon bg-text"></i>
-		    <input type="text" class="search-input bg-body bg-text" placeholder="Search forum">
+		    <i class="bi bi-search search-icon text-body"></i>
+		    <input type="text" class="search-input bg-body text-body" placeholder="Search forum">
 		  </div>
 		</div>
 
 		<div class="col-md-4 col-sm-4 d-none d-sm-flex header-nav unauthorized bg-body">
 		  <nav class="d-flex align-items-center justify-content-end w-100 gap-2">
-		    <button class="btn btn-outline-light btn-sm login-btn bg-text text-body"
+		    <button class="btn btn-outline-light btn-sm login-btn text-body text-body"
 		      data-bs-toggle="modal" data-bs-target="#authModal"
 		      data-auth-type="login">
 		      <i class="bi bi-box-arrow-in-right text-body"></i> Log In
 		    </button>
-		    <button class="btn btn-primary btn-sm signup-btn bg-text" data-bs-toggle="modal"
+		    <button class="btn btn-primary btn-sm signup-btn text-body" data-bs-toggle="modal"
 		      data-bs-target="#authModal" data-auth-type="signup">
 		      <i class="bi bi-person-plus"></i> Sign Up
 		    </button>
@@ -39,17 +39,17 @@ export function renderHeader() {
 
 		<div class="col-md-4 col-sm-4 d-none d-sm-flex header-nav authorized visually-hidden bg-body">
 		<div class="d-flex align-items-center justify-content-end w-100 gap-3">
-		<button class="btn btn-primary btn-sm create-post-btn bg-text">
+		<button class="btn btn-primary btn-sm create-post-btn text-body">
 		<i class="bi bi-plus-lg"></i> Create Post
 		</button>
-		<button class="theme-moon btn btn-primary btn-sm create-post-btn bg-text  theme-toggle" >
+		<button class="theme-moon btn btn-primary btn-sm create-post-btn text-body  theme-toggle" >
 		    <i class="bi bi-moon"></i> 
 		  </button>
 		
 		    <div class="d-flex align-items-center gap-2 bg-body">
-		      <a href="#" class="nav-link " title="Chat"><i class="bi bi-chat-square-text bg-text"></i></a>
-		      <a href="#" class="nav-link bg-text" title="Notifications"><i class="bi bi-bell"></i></a>
-		      <a href="#" class="nav-link bg-text" title="Coins"><i class="bi bi-coin"></i></a>
+		      <a href="#" class="nav-link " title="Chat"><i class="bi bi-chat-square-text text-body"></i></a>
+		      <a href="#" class="nav-link text-body" title="Notifications"><i class="bi bi-bell"></i></a>
+		      <a href="#" class="nav-link text-body" title="Coins"><i class="bi bi-coin"></i></a>
 
 		      <div class="dropdown">
 			<a href="#" class="nav-link user-avatar dropdown-toggle"
@@ -58,16 +58,16 @@ export function renderHeader() {
 			  <img src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_4.png"
 			    alt="User">
 			</a>
-			<ul class="dropdown-menu dropdown-menu-end"
+			<ul class="dropdown-menu dropdown-menu-end bg-body"
 			  aria-labelledby="profileDropdown">
 			  <li>
-			    <h6 class="dropdown-header bg-text">My Profile</h6>
+			    <h6 class="dropdown-header text-body">My Profile</h6>
 			  </li>
-			  <li><a class="dropdown-item bg-text" href="./pages/profile.html"><i class="bi bi-person me-2"></i>Profile</a></li>
-			  <li><a class="dropdown-item bg-text" href="./pages/saved.html"><i class="bi bi-bookmark me-2"></i>Saved</a></li>
-			  <li><a class="dropdown-item bg-text" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+			  <li><a class="dropdown-item text-body" href="./pages/profile.html"><i class="bi bi-person me-2"></i>Profile</a></li>
+			  <li><a class="dropdown-item text-body" href="./pages/saved.html"><i class="bi bi-bookmark me-2"></i>Saved</a></li>
+			  <li><a class="dropdown-item text-body" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
 			  <li><hr class="dropdown-divider"></li>
-			  <li><a class="dropdown-item bg-text" href="#"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a></li>
+			  <li><a class="dropdown-item text-body" href="#"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a></li>
 			</ul>
 		      </div>
 		    </div>
@@ -75,7 +75,7 @@ export function renderHeader() {
 		</div>
 
 		<div class="col-1 d-sm-none text-end bg-body">
-		  <button class="mobile-menu-btn bg-body bg-text">
+		  <button class="mobile-menu-btn bg-body text-body">
 			<i class="bi bi-list text-primary" style="color: black; "></i>
 		  </button>
 		</div>
@@ -86,8 +86,8 @@ export function renderHeader() {
 	  <div class="reddit-sidebar bg-body">
 	    <div class="sidebar-content bg-body">
 	      <div class="sidebar-header">
-		<h3 class="bg-text">Communities</h3>
-		<button class="sidebar-close bg-text"><i class="bi bi-x-lg"></i></button>
+		<h3 class="text-body">Communities</h3>
+		<button class="sidebar-close text-body"><i class="bi bi-x-lg"></i></button>
 	      </div>
 	      <div class="sidebar-body">
 		<ul class="sidebar-menu">
@@ -111,7 +111,7 @@ export function renderHeader() {
 		<div class="modal-dialog">
 			<div class="modal-content bg-body">
 				<div class="modal-header text-body">
-					<h5 class="modal-title bg-text" id="authModalLabel">Welcome to AIU Forum</h5>
+					<h5 class="modal-title text-body" id="authModalLabel">Welcome to AIU Forum</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -119,12 +119,12 @@ export function renderHeader() {
 					<div class="auth-tabs mb-4">
 						<ul class="nav nav-tabs" id="authTab" role="tablist">
 							<li class="nav-item" role="presentation">
-								<button class="nav-link active bg-body bg-text" id="login-tab"
+								<button class="nav-link active bg-body text-body" id="login-tab"
 									data-bs-toggle="tab" data-bs-target="#login"
 									type="button" role="tab">Log In</button>
 							</li>
 							<li class="nav-item" role="presentation">
-								<button class="nav-link bg-body bg-text" id="signup-tab"
+								<button class="nav-link bg-body text-body" id="signup-tab"
 									data-bs-toggle="tab" data-bs-target="#signup"
 									type="button" role="tab">Sign Up</button>
 							</li>
@@ -134,21 +134,21 @@ export function renderHeader() {
 								role="tabpanel">
 								<form class="mt-3">
 									<div class="mb-3">
-										<input type="text" class="form-control bg-body bg-text"
+										<input type="text" class="form-control bg-body text-body"
 											placeholder="Username">
 									</div>
 									<div class="mb-3">
 										<input type="password"
-											class="form-control bg-body bg-text"
+											class="form-control bg-body text-body"
 											placeholder="Password">
 									</div>
 									<button type="submit"
-										class="btn btn-primary w-100 bg-text">Log
+										class="btn btn-primary w-100 text-body">Log
 										In</button>
 								</form>
-								<div class="text-center my-3 bg-text">OR</div>
+								<div class="text-center my-3 text-body">OR</div>
 								<button
-									class="btn btn-outline-dark w-100 mb-3 google-auth-btn bg-text">
+									class="btn btn-outline-dark w-100 mb-3 google-auth-btn ">
 									<img src="./assets/google-logo.png" alt="Google"
 										class="me-2" style="height: 20px;">
 									Continue with Google
@@ -157,25 +157,25 @@ export function renderHeader() {
 							<div class="tab-pane fade" id="signup" role="tabpanel">
 								<form class="mt-3">
 									<div class="mb-3">
-										<input type="email" class="form-control bg-body bg-text"
+										<input type="email" class="form-control bg-body text-body"
 											placeholder="Email">
 									</div>
 									<div class="mb-3">
-										<input type="text" class="form-control bg-body bg-text"
+										<input type="text" class="form-control bg-body text-body"
 											placeholder="Username">
 									</div>
 									<div class="mb-3">
 										<input type="password"
-											class="form-control bg-body bg-text"
+											class="form-control bg-body text-body"
 											placeholder="Password">
 									</div>
 									<button type="submit"
-										class="btn btn-primary w-100 bg-text">Sign
+										class="btn btn-primary w-100 text-body">Sign
 										Up</button>
 								</form>
-								<div class="text-center my-3 bg-text">OR</div>
+								<div class="text-center my-3 text-body">OR</div>
 								<button
-									class="btn btn-outline-dark w-100 mb-3 google-auth-btn bg-text">
+									class="btn btn-outline-dark w-100 mb-3 google-auth-btn text-body">
 									<img src="./assets/google-logo.png" alt="Google"
 										class="me-2" style="height: 20px;">
 									Continue with Google
@@ -193,14 +193,14 @@ export function renderHeader() {
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content bg-body">
 				<div class="modal-header">
-					<h5 class="modal-title bg-text" id="createPostModalLabel">Create a post</h5>
+					<h5 class="modal-title text-body" id="createPostModalLabel">Create a post</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<form>
 						<div class="mb-3">
-							<select class="form-select bg-body bg-text">
+							<select class="form-select bg-body text-body">
 								<option selected>Choose a community</option>
 								<option>r/javascript</option>
 								<option>r/webdev</option>
@@ -208,16 +208,16 @@ export function renderHeader() {
 							</select>
 						</div>
 						<div class="mb-3">
-							<input type="text" class="form-control bg-body bg-text" placeholder="Title">
+							<input type="text" class="form-control bg-body text-body" placeholder="Title">
 						</div>
 						<div class="mb-3">
-							<textarea class="form-control bg-body bg-text" rows="5"
+							<textarea class="form-control bg-body text-body" rows="5"
 								placeholder="Text (optional)"></textarea>
 						</div>
 						<div class="d-flex justify-content-end gap-2">
 							<button type="button" class="btn btn-outline-secondary"
 								data-bs-dismiss="modal">Cancel</button>
-							<button type="submit" class="btn btn-primary bg-text">Post</button>
+							<button type="submit" class="btn btn-primary text-body">Post</button>
 						</div>
 					</form>
 				</div>
@@ -226,7 +226,7 @@ export function renderHeader() {
 	</div>
 
 	<div class="auth-toggle" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-		<button id="toggleAuthState" class="btn btn-warning bg-text">Toggle Auth State</button>
+		<button id="toggleAuthState" class="btn btn-warning text-body">Toggle Auth State</button>
 	</div>
 	`;
 }
