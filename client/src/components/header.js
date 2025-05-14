@@ -75,9 +75,7 @@ export function renderHeader() {
 		</div>
 
 		<div class="col-1 d-sm-none text-end bg-body">
-		  <button class="mobile-menu-btn bg-body text-body">
-			<i class="bi bi-list text-primary" style="color: black; "></i>
-		  </button>
+		  
 		</div>
 	      </div>
 	    </div>
@@ -86,7 +84,7 @@ export function renderHeader() {
 	  <div class="reddit-sidebar bg-body">
 	    <div class="sidebar-content bg-body">
 	      <div class="sidebar-header">
-		<h3 class="text-body">Communities</h3>
+		<h3>Communities</h3>
 		<button class="sidebar-close text-body"><i class="bi bi-x-lg"></i></button>
 	      </div>
 	      <div class="sidebar-body">
