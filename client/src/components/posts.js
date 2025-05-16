@@ -1,4 +1,10 @@
-export function renderPosts(posts = [], isAuthenticated = false) {
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
+
+export function renderPosts(posts = []) {
 	return `
 	  <div class="posts-container">
 	    ${posts.length > 0 ?
@@ -10,6 +16,7 @@ export function renderPosts(posts = [], isAuthenticated = false) {
 }
 
 function renderSinglePost(post) {
+	const time = dayjs(post.created_at).fromNow();
 	return `
 	  <div class="post bg-body" data-post-id="${post.id}">
 	    <div class="post-votes bg-body">
@@ -25,7 +32,7 @@ function renderSinglePost(post) {
 	      <div class="post-header">
 		<span class="post-community text-body">r/${post.community}</span>
 		<span class="post-author text-body">Posted by u/${post.author}</span>
-		<span class="post-time text-body">${post.time}</span>
+		<span class="post-time text-body">${time}</span>
 	      </div>
 	      <h3 class="post-title text-body">${post.title}</h3>
 	      ${post.image ? `
@@ -36,7 +43,7 @@ function renderSinglePost(post) {
 	      <div class="post-text text-body">${post.content}</div>
 	      <div class="post-actions">
 		<button class="action-btn comment-btn text-body">
-		  <i class="bi bi-chat text-body"></i> ${post.comments} Comments
+		  <i class="bi bi-chat text-body"></i> ${post.comments || 0} Comments
 		</button>
 		<button class="action-btn share-btn text-body">
 		  <i class="bi bi-share text-body"></i> Share

@@ -1,5 +1,115 @@
 import { renderHeader } from '../components/header.js';
 
+
+function getCookie(name) {
+  const cookies = document.cookie.split(';').map(c => c.trim());
+  for (const cookie of cookies) {
+    if (cookie.startsWith(name + '=')) {
+      return cookie.split('=')[1];
+    }
+  }
+  return null;
+}
+
+const token = getCookie("Token");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const mediaInput = document.getElementById("mediaInput");
+  const previewContainer = document.getElementById("previewContainer");
+  const createPostForm = document.getElementById("createPostForm");
+
+  // Превью изображений/видео
+  mediaInput?.addEventListener("change", () => {
+    const file = mediaInput.files[0];
+    previewContainer.innerHTML = "";
+
+    if (!file) return;
+
+    const fileType = file.type;
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      let previewElement;
+      if (fileType.startsWith("image/")) {
+        previewElement = document.createElement("img");
+        previewElement.src = e.target.result;
+        previewElement.className = "img-fluid rounded";
+        previewElement.style.maxHeight = "300px";
+      } else if (fileType.startsWith("video/")) {
+        previewElement = document.createElement("video");
+        previewElement.src = e.target.result;
+        previewElement.controls = true;
+        previewElement.className = "w-100 rounded";
+        previewElement.style.maxHeight = "300px";
+      }
+
+      if (previewElement) {
+        previewContainer.appendChild(previewElement);
+      }
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  // Обработка отправки формы
+  createPostForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    const title = createPostForm.querySelector('input[placeholder="Title"]').value;
+    const content = createPostForm.querySelector("textarea").value;
+    const community = createPostForm.querySelector("select").value;
+    const file = mediaInput.files[0];
+
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("community", community);
+    if (file) {
+      formData.append("image", file); // ⬅️ строго "image", не "file"
+    }
+
+    try {
+      const res = await fetch("/api/threads", {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}` // 🔒 если у тебя есть authMiddleware
+        },
+        body: formData,
+        credentials: 'same-origin',
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        alert("Ошибка: " + err);
+        return;
+      }
+
+      alert("Пост опубликован!");
+      createPostForm.reset();
+      previewContainer.innerHTML = "";
+      bootstrap.Modal.getInstance(document.getElementById("createPostModal")).hide();
+    } catch (err) {
+      console.error(err);
+      alert("Произошла ошибка при публикации поста.");
+    }
+  });
+});
+
+
+
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000); // скрыть через 3 секунды
+}
+
+
+
 // Render components
 document.body.insertAdjacentHTML('afterbegin', renderHeader());
 
@@ -17,8 +127,19 @@ const authModalInstance = new bootstrap.Modal(authModal);
 const createPostModal = new bootstrap.Modal(document.getElementById('createPostModal'));
 
 // Auth state management
-let isAuthenticated = false;
 
+
+let isAuthenticated = false
+if(getCookie("Token")){
+	console.log("да")
+	isAuthenticated = true;
+	toggleAuthState();
+}
+else{
+	console.log("нет")
+	isAuthenticated = false;
+	toggleAuthState();
+}
 function toggleAuthState() {
 	isAuthenticated = !isAuthenticated;
 
@@ -36,6 +157,116 @@ function toggleAuthState() {
 		}
 	}
 }
+
+//  log in and sign up blya
+
+// Получаем форму регистрации из вкладки "Sign Up"
+const signupForm = document.querySelector('#signup form');
+const signupInputs = signupForm.querySelectorAll('input');
+
+// Отдельно выбираем поля по их порядку
+const emailInput = signupInputs[0];
+const usernameInput = signupInputs[1];
+const passwordInput = signupInputs[2];
+
+
+1
+// Функция отправки данных на сервер
+async function registerUser(username, email, password) {
+  const response = await fetch("http://localhost:5000/api/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, email, password }),
+  });
+  return response.json();
+}
+
+// Обработка отправки формы
+signupForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const emailValue = emailInput.value.trim();
+  const usernameValue = usernameInput.value.trim();
+  const passwordValue = passwordInput.value.trim();
+
+  if (!emailValue || !usernameValue || !passwordValue) {
+    alert('Please fill in all fields.');
+    return;
+  }
+
+  const result = await registerUser(usernameValue, emailValue, passwordValue);
+
+  if (result.message === "Ошибка: SQLITE_CONSTRAINT: UNIQUE constraint failed: users.email") {
+    console.log("Эта почта уже используется");
+    showToast("Эта почта уже используется");
+  } else if (result.message === "Ошибка: SQLITE_CONSTRAINT: UNIQUE constraint failed: users.username") {
+    console.log('Этот ник уже используется');
+    showToast("Этот ник уже используется");
+  } else if (result.message === "Пользователь зарегестрирован") {
+    console.log('Пользователь зарегестрирован');
+    showToast("Пользователь зарегестрирован");
+    // Закрываем модалку и открываем другую при необходимости
+    const authModal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+    authModal.hide();
+     // Эта функция у тебя, видимо, уже есть
+  }
+});
+
+
+
+// Получаем форму логина внутри вкладки #login
+const loginForm = document.querySelector('#login form');
+
+// Получаем поля ввода из формы логина
+const usernamInput = loginForm.querySelector('input[type="text"]');
+const passworInput = loginForm.querySelector('input[type="password"]');
+
+loginForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const email = usernamInput.value.trim();
+  const password = passworInput.value.trim();
+
+  if (!email || !password) {
+    showToast("Заполните оба поля!", "warning");
+    return;
+  }
+
+  console.log('Username:', email);
+  console.log('Password:', password);
+
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/login', {  // Укажи свой адрес, если другой
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),  // В твоём API логин по username
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      document.cookie = `Token=${data.token}; path=/; max-age=2592000; samesite=strict`;
+      showToast("Успешный вход!", "success");
+      // Закрываем модалку (если нужно)
+      const authModal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+      if (authModal) authModal.hide();
+
+      // Перенаправление
+      setTimeout(() => window.location.href = '/', 1000);
+    } else {
+      const error = await response.json();
+      console.error('Login failed:', error.message);
+      showToast("Неверный логин или пароль", "error");
+    }
+  } catch (err) {
+    console.error('Network error:', err);
+    showToast("Ошибка сети", "error");
+  }
+});
+
 
 // Initialize sidebar functionality
 function initSidebar() {
@@ -89,22 +320,16 @@ googleAuthBtns.forEach(btn => {
 	btn.addEventListener('click', () => {
 		// In a real app, this would trigger your Google auth flow
 		console.log('Google auth initiated');
-
-		// For demo purposes, we'll just authenticate after a delay
-		setTimeout(() => {
-			authModalInstance.hide();
-			toggleAuthState();
-		}, 1500);
 	});
 });
 
 // Initialize state
 toggleAuthState();
 
-// Event listener for demo button
-if (toggleAuthBtn) {
-	toggleAuthBtn.addEventListener('click', toggleAuthState);
-}
+// // Event listener for demo button
+// if (toggleAuthBtn) {
+// 	toggleAuthBtn.addEventListener('click', toggleAuthState);
+// }
 
 // Handle auth modal tab switching based on which button opened it
 document.querySelectorAll('[data-bs-toggle="modal"]').forEach(btn => {

@@ -12,3 +12,13 @@ document.querySelectorAll('[data-bs-toggle="modal"]').forEach(btn => {
 });
 
 mainContent.insertAdjacentHTML('beforeend', renderProfile());
+
+
+async function userData() {
+	const responce = await fetch("http://localhost:5000/api/auth/me"), {
+		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${token}`
+		},
+	}
+}

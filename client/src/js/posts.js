@@ -6,31 +6,24 @@ const mainContent = document.getElementById('main');
 /*-------------------------------------------------------------------*/
 // Mock data - replace with actual API calls
 async function fetchPosts() {
-	// In a real app, you would fetch from your API
-	return [
-		{
-			id: 1,
-			community: 'javascript',
-			author: 'webdev123',
-			time: '5 hours ago',
-			title: 'How to use async/await properly',
-			content: 'I\'ve been struggling with async/await patterns. Here are some tips I learned...',
-			votes: 42,
-			comments: 8,
-			image: null
-		},
-		{
-			id: 2,
-			community: 'reactjs',
-			author: 'react_fan',
-			time: '12 hours ago',
-			title: 'React 19 new features preview',
-			content: 'The new React version promises some exciting changes...',
-			votes: 156,
-			comments: 32,
-			image: '../assets/1.jpg'
+	try{
+		const responce = await fetch('/api/threads', {
+			method:'GET',
+			credentials: 'same-origin'
+		});
+		if(responce.ok){
+			const threads = await responce.json();
+			console.log(threads);
+			threads.created_at
+			return(threads);
 		}
-	];
+		else{
+			const error = await responce.json();
+			console.error('Ошибка', error.message || 'неизвестно какая');
+		}
+	}catch(error){
+		console.error('Ошибка сети:', error.message || 'неизвестно какая');
+		}
 }
 
 // Initialize posts

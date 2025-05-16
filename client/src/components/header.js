@@ -10,7 +10,7 @@ export function renderHeader() {
 		    <button class="sidebar-toggle me-2 bg-body text-body">
 		      <i class="bi bi-list"></i>
 		    </button>
-		    <a href="#" class="d-flex align-items-center ">
+		    <a href="/" class="d-flex align-items-center ">
 		      <span class="logo-text text-body" id="logo">AIU Forum</span>
 		    </a>
 		  </div>
@@ -63,11 +63,11 @@ export function renderHeader() {
 			  <li>
 			    <h6 class="dropdown-header text-body">My Profile</h6>
 			  </li>
-			  <li><a class="dropdown-item text-body" href="./pages/profile.html"><i class="bi bi-person me-2"></i>Profile</a></li>
-			  <li><a class="dropdown-item text-body" href="./pages/saved.html"><i class="bi bi-bookmark me-2"></i>Saved</a></li>
-			  <li><a class="dropdown-item text-body" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+			  <li><a class="dropdown-item text-body" href="/profile"><i class="bi bi-person me-2"></i>Profile</a></li>
+			  <li><a class="dropdown-item text-body" href="/saved"><i class="bi bi-bookmark me-2"></i>Saved</a></li>
+			  <li><a class="dropdown-item text-body" href="/settings"><i class="bi bi-gear me-2"></i>Settings</a></li>
 			  <li><hr class="dropdown-divider"></li>
-			  <li><a class="dropdown-item text-body" href="#"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a></li>
+			  <li><a class="dropdown-item text-body" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a></li>
 			</ul>
 		      </div>
 		    </div>
@@ -84,7 +84,7 @@ export function renderHeader() {
 	  <div class="reddit-sidebar bg-body">
 	    <div class="sidebar-content bg-body">
 	      <div class="sidebar-header">
-		<h3>Communities</h3>
+		<h3	>Communities</h3>
 		<button class="sidebar-close text-body"><i class="bi bi-x-lg"></i></button>
 	      </div>
 	      <div class="sidebar-body">
@@ -186,45 +186,58 @@ export function renderHeader() {
 		</div>
 	</div>
 
-	<div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content bg-body">
-				<div class="modal-header">
-					<h5 class="modal-title text-body" id="createPostModalLabel">Create a post</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="mb-3">
-							<select class="form-select bg-body text-body">
-								<option selected>Choose a community</option>
-								<option>r/javascript</option>
-								<option>r/webdev</option>
-								<option>r/reactjs</option>
-							</select>
-						</div>
-						<div class="mb-3">
-							<input type="text" class="form-control bg-body text-body" placeholder="Title">
-						</div>
-						<div class="mb-3">
-							<textarea class="form-control bg-body text-body" rows="5"
-								placeholder="Text (optional)"></textarea>
-						</div>
-						<div class="d-flex justify-content-end gap-2">
-							<button type="button" class="btn btn-outline-secondary"
-								data-bs-dismiss="modal">Cancel</button>
-							<button type="submit" class="btn btn-primary text-body">Post</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<div class="auth-toggle" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-		<button id="toggleAuthState" class="btn btn-warning text-body">Toggle Auth State</button>
-	</div>
+
+<div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-body">
+      <div class="modal-header">
+        <h5 class="modal-title text-body" id="createPostModalLabel">Create a post</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="createPostForm">
+          <div class="mb-3 text-body">
+            <select class="form-select bg-body text-body" name="community" required>
+              <option selected disabled>Choose a community</option>
+              <option value="javascript">r/javascript</option>
+              <option value="webdev">r/webdev</option>
+              <option value="reactjs">r/reactjs</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control bg-body text-body" name="title" placeholder="Title" required>
+          </div>
+          <div class="mb-3">
+            <textarea class="form-control bg-body text-body" name="content" rows="5"
+              placeholder="Text (optional)"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="mediaInput" class="form-label text-body">Upload image or video</label>
+            <input class="form-control bg-body text-body" type="file" id="mediaInput" name="media"
+              accept="image/*,video/*">
+          </div>
+          <div id="previewContainer" class="mb-3"></div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary text-body">Post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div id="toast" class="toast">Это уведомление</div>
+
+       
+
+
+
+
 	`;
 }

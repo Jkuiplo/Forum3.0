@@ -1,0 +1,203 @@
+// Variables
+$reddit-orange: #ff4500;
+$reddit-dark: #1a1a1b;
+$reddit-light-dark: #272729;
+$border: #94949475;
+$reddit-text: #d7dadc;
+$reddit-text-light: #ffffff;
+$reddit-blue: #0079d3;
+$background: #161616;
+
+.settings-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  
+  .settings-header {
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid $border;
+    
+    h2 {
+      margin: 0;
+      font-size: 1.75rem;
+      color: $reddit-text-light;
+    }
+  }
+}
+
+.settings-content {
+  display: flex;
+  gap: 2rem;
+  
+  .settings-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    
+    .settings-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        background: none;
+        border: none;
+        text-align: left;
+        border-radius: 4px;
+        cursor: pointer;
+        color: $reddit-text;
+        
+        &:hover {
+          background-color: $reddit-light-dark;
+          color: $reddit-text-light;
+        }
+        
+        &.active {
+          background-color: $reddit-blue;
+          color: white;
+          
+          i {
+            color: white !important;
+          }
+        }
+        
+        i {
+          font-size: 1.1rem;
+          width: 20px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  
+  .settings-main {
+    flex-grow: 1;
+    
+    .settings-section {
+      background-color: $reddit-dark;
+      border-radius: 4px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      
+      h3 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        color: $reddit-text-light;
+      }
+    }
+    
+    .settings-form {
+      .form-group {
+        margin-bottom: 1.5rem;
+        
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+        }
+        
+        .form-control {
+          background-color: $reddit-light-dark;
+          border: 1px solid $border;
+          color: $reddit-text;
+          width: 100%;
+          padding: 0.5rem 0.75rem;
+          border-radius: 4px;
+          
+          &:focus {
+            outline: none;
+            border-color: $reddit-text;
+            background-color: $reddit-dark;
+          }
+        }
+        
+        textarea.form-control {
+          min-height: 100px;
+        }
+        
+        .avatar-upload, .banner-upload {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          
+          .avatar-preview {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+          
+          .banner-preview {
+            height: 80px;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 4px;
+            background-color: $reddit-light-dark;
+          }
+          
+          button {
+            align-self: flex-start;
+          }
+        }
+      }
+      
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid $border;
+      }
+    }
+  }
+}
+
+.auth-required {
+  text-align: center;
+  padding: 3rem 2rem;
+  
+  i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: $reddit-light-dark;
+  }
+  
+  h3 {
+    color: $reddit-text-light;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    max-width: 400px;
+    margin: 0 auto 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-content {
+    flex-direction: column;
+    
+    .settings-sidebar {
+      width: 100%;
+      
+      .settings-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        
+        .nav-item {
+          span {
+            display: none;
+          }
+          
+          i {
+            font-size: 1.25rem;
+          }
+        }
+      }
+    }
+  }
+}
