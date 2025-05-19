@@ -37,7 +37,7 @@ function renderSinglePost(post) {
 	      <h3 class="post-title text-body">${post.title}</h3>
 	      ${post.image ? `
 		<div class="post-image-container bg-body">
-		  <img src="${post.image}" class="post-image" alt="${post.title}">
+		  <img src="http://localhost:5000/${post.image}" class="post-image" alt="${post.title}">
 		</div>
 	      ` : ''}
 	      <div class="post-text text-body">${post.content}</div>
@@ -57,16 +57,28 @@ function renderSinglePost(post) {
 	`;
 }
 
-function renderEmptyState(isAuthenticated) {
-	return `
-	  <div class="empty-posts bg-body text-body">
-	    <i class="bi bi-postcard text-body"></i>
-	    <h3 class="text-body">No posts yet</h3>
-	    <p class="text-body">Be the first to create a post in this community</p>
-	    ${isAuthenticated ?
-			'<button class="btn btn-primary create-post-btn">Create Post</button>' :
-			'<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal">Log In to Post</button>'
-		}
-	  </div>
-	`;
+
+function renderPost(post) {
+  return `
+    <div class="post" data-post-id="${post.id}">
+      <!-- Your post content -->
+      ${renderCommentsPopup(post.id, true)} <!-- true for dark theme -->
+    </div>
+  `;
 }
+
+
+
+// function renderEmptyState(isAuthenticated) {
+// 	return `
+// 	  <div class="empty-posts bg-body text-body">
+// 	    <i class="bi bi-postcard text-body"></i>
+// 	    <h3 class="text-body">No posts yet</h3>
+// 	    <p class="text-body">Be the first to create a post in this community</p>
+// 	    ${isAuthenticated ?
+// 			'<button class="btn btn-primary create-post-btn">Create Post</button>' :
+// 			'<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal">Log In to Post</button>'
+// 		}
+// 	  </div>
+// 	`;
+// }

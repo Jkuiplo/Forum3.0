@@ -12,6 +12,7 @@ function getCookie(name) {
 }
 
 const token = getCookie("Token");
+export {token}
 
 document.addEventListener("DOMContentLoaded", () => {
   const mediaInput = document.getElementById("mediaInput");

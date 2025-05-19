@@ -1,73 +1,138 @@
 import { renderPosts } from '../components/posts.js';
+import { token } from './main.js';
+import { renderCommentsPopup, setupCommentsPopup } from '../components/comments.js';
 
 const mainContent = document.getElementById('main');
 
-
 /*-------------------------------------------------------------------*/
-// Mock data - replace with actual API calls
+// Fetch posts from API
 async function fetchPosts() {
-	try{
-		const responce = await fetch('/api/threads', {
-			method:'GET',
-			credentials: 'same-origin'
-		});
-		if(responce.ok){
-			const threads = await responce.json();
-			console.log(threads);
-			threads.created_at
-			return(threads);
-		}
-		else{
-			const error = await responce.json();
-			console.error('Ошибка', error.message || 'неизвестно какая');
-		}
-	}catch(error){
-		console.error('Ошибка сети:', error.message || 'неизвестно какая');
-		}
+    try {
+        const response = await fetch('http://localhost:5000/api/threads', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.ok) {
+            const threads = await response.json();
+            console.log(threads);
+            return threads;
+        } else {
+            const error = await response.json();
+            console.error('Error:', error.message || 'Unknown error');
+            return [];
+        }
+    } catch (error) {
+        console.error('Network error:', error.message || 'Unknown error');
+        return [];
+    }
 }
 
 // Initialize posts
 async function initPosts() {
-	try {
-		const posts = await fetchPosts();
-		mainContent.innerHTML = renderPosts(posts);
-		setupPostInteractions();
-	} catch (error) {
-		console.error('Error loading posts:', error);
-		mainContent.innerHTML = renderPosts([]);
-	}
+    try {
+        const posts = await fetchPosts();
+        mainContent.innerHTML = renderPosts(posts);
+        setupPostInteractions();
+    } catch (error) {
+        console.error('Error loading posts:', error);
+        mainContent.innerHTML = '<div class="alert alert-danger">Failed to load posts</div>';
+    }
 }
 
 // Handle post interactions
 function setupPostInteractions() {
-	// Upvote/downvote functionality
-	document.querySelectorAll('.vote-btn').forEach(btn => {
-		btn.addEventListener('click', function () {
-			const postId = this.closest('.post').dataset.postId;
-			const isUpvote = this.classList.contains('upvote');
+    // Voting functionality
+    document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const post = this.closest('.post');
+            const postId = post.dataset.postId;
+            const isUpvote = this.classList.contains('upvote');
+            const isDownvote = this.classList.contains('downvote');
 
-			// In a real app, you would send this to your API
-			console.log(`${isUpvote ? 'Upvote' : 'Downvote'} post ${postId}`);
+            const voteCountEl = post.querySelector('.vote-count');
+            let voteCount = parseInt(voteCountEl.textContent);
 
-			// Temporary UI update
-			this.classList.toggle('active');
-			const voteCount = this.closest('.post-votes').querySelector('.vote-count');
-			const currentCount = parseInt(voteCount.textContent);
-			voteCount.textContent = isUpvote ? currentCount + 1 : currentCount - 1;
-		});
-	});
+            const upvoteBtn = post.querySelector('.upvote');
+            const downvoteBtn = post.querySelector('.downvote');
 
-	// Other post actions
-	document.querySelectorAll('.comment-btn').forEach(btn => {
-		btn.addEventListener('click', () => {
-			const postId = btn.closest('.post').dataset.postId;
-			console.log('View comments for post', postId);
-			// You would implement comment viewing here
-		});
-	});
+            const isCurrentlyActive = this.classList.contains('active');
+            let voteType;
+
+            if (isCurrentlyActive) {
+                voteType = 0; // remove vote
+            } else if (isUpvote) {
+                voteType = 1; // upvote
+            } else if (isDownvote) {
+                voteType = -1; // downvote
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/votes/thread`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        threadId: postId,
+                        vote: voteType
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update vote');
+                }
+
+                const result = await response.json();
+
+                // Update UI based on server response
+                upvoteBtn.classList.remove('active');
+                downvoteBtn.classList.remove('active');
+
+                if (isCurrentlyActive) {
+                    voteCount += isUpvote ? -1 : 1;
+                } else {
+                    this.classList.add('active');
+                    if (isUpvote) {
+                        voteCount += downvoteBtn.classList.contains('active') ? 2 : 1;
+                    } else {
+                        voteCount -= upvoteBtn.classList.contains('active') ? 2 : 1;
+                    }
+                }
+
+                voteCountEl.textContent = voteCount;
+
+            } catch (error) {
+                console.error('Error updating vote:', error);
+                // Optionally show error to user
+            }
+        });
+    });
+
+    // Comments functionality
+    document.querySelectorAll('.comment-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const postId = btn.closest('.post').dataset.postId;
+            const postElement = btn.closest('.post');
+            
+            // Check if popup already exists
+            if (!postElement.querySelector('.comments-popup')) {
+                postElement.insertAdjacentHTML('beforeend', renderCommentsPopup(postId, true));
+                setupCommentsPopup(postId);
+            }
+            
+            // Initialize or show the modal
+            const modal = new bootstrap.Modal(document.getElementById(`commentsModal-${postId}`));
+            modal.show();
+        });
+    });
 }
 
 /*-------------------------------------------------------------------*/
 
-
-initPosts();
+// Initialize the page
+document.addEventListener('DOMContentLoaded', initPosts);
