@@ -1,6 +1,7 @@
 import { renderPosts } from '../components/posts.js';
 import { token } from './main.js';
-import { renderCommentsPopup, setupCommentsPopup } from '../components/comments.js';
+import { renderCommentsPopup, setupCommentsPopup, loadCommentsList } from '../components/comments.js';
+
 
 const mainContent = document.getElementById('main');
 
@@ -115,21 +116,24 @@ function setupPostInteractions() {
 
     // Comments functionality
     document.querySelectorAll('.comment-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const postId = btn.closest('.post').dataset.postId;
-            const postElement = btn.closest('.post');
-            
-            // Check if popup already exists
-            if (!postElement.querySelector('.comments-popup')) {
-                postElement.insertAdjacentHTML('beforeend', renderCommentsPopup(postId, true));
-                setupCommentsPopup(postId);
-            }
-            
-            // Initialize or show the modal
-            const modal = new bootstrap.Modal(document.getElementById(`commentsModal-${postId}`));
-            modal.show();
-        });
-    });
+  btn.addEventListener('click', async () => {
+    const postId = btn.closest('.post').dataset.postId;
+
+    // Если модалка еще не добавлена
+    if (!document.getElementById(`commentsModal-${postId}`)) {
+      document.body.insertAdjacentHTML('beforeend', renderCommentsPopup(postId));
+      setupCommentsPopup(postId); // Подключим форму
+    }
+
+    // Загружаем комментарии
+    await loadCommentsList(postId);
+
+    // Показываем модалку
+    const modal = new bootstrap.Modal(document.getElementById(`commentsModal-${postId}`));
+    modal.show();
+  });
+});
+
 }
 
 /*-------------------------------------------------------------------*/

@@ -13,10 +13,20 @@ const Comment = {
 
     // 📌 Получить все комментарии к треду
     getByThreadId: (threadId, callback) => {
-        const sql = `SELECT comments.*, users.username 
-                     FROM comments 
-                     JOIN users ON comments.FK_users_id = users.id 
-                     WHERE FK_thread_id = ? ORDER BY created_at ASC`;
+        const sql = `SELECT 
+        c.id,
+    u.avatar, 
+    u.username,
+    c.content, 
+    c.created_at, 
+    COALESCE(SUM(v.vote), 0) AS total_votes
+FROM comments c
+JOIN users u ON c.FK_users_id = u.id
+LEFT JOIN votes v ON v.FK_comment_id = c.id
+WHERE c.FK_thread_id = ?
+GROUP BY c.id, u.avatar, u.username, c.content, c.created_at
+ORDER BY c.created_at ASC;
+`;
         db.all(sql, [threadId], callback);
     },
 

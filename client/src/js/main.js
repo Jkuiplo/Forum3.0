@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("/api/threads", {
+      const res = await fetch("http://localhost:5000/api/threads", {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${token}` // 🔒 если у тебя есть authMiddleware

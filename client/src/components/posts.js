@@ -1,10 +1,16 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 dayjs.extend(relativeTime);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export default dayjs;
 
 
-export function renderPosts(posts = []) {
+export function renderPosts(posts = [], isAuthenticated = false) {
 	return `
 	  <div class="posts-container">
 	    ${posts.length > 0 ?
@@ -15,8 +21,9 @@ export function renderPosts(posts = []) {
 	`;
 }
 
+
 function renderSinglePost(post) {
-	const time = dayjs(post.created_at).fromNow();
+	const time = dayjs.utc(post.created_at).tz('Asia/Almaty').fromNow();
 	return `
 	  <div class="post bg-body" data-post-id="${post.id}">
 	    <div class="post-votes bg-body">
@@ -43,7 +50,7 @@ function renderSinglePost(post) {
 	      <div class="post-text text-body">${post.content}</div>
 	      <div class="post-actions">
 		<button class="action-btn comment-btn text-body">
-		  <i class="bi bi-chat text-body"></i> ${post.comments || 0} Comments
+		  <i class="bi bi-chat text-body"></i> ${post.comment_count} Comments
 		</button>
 		<button class="action-btn share-btn text-body">
 		  <i class="bi bi-share text-body"></i> Share

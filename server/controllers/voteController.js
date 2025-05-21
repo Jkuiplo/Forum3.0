@@ -90,23 +90,80 @@ function voteOnComment(req, res) {
 		return res.status(400).json({ message: 'Invalid vote value' });
 	}
 
-	Votes.addVote(userId, null, parseInt(vote), (err, voteId) => {
+	// Проверяем, есть ли уже голос от пользователя
+	Votes.findCommentVote(userId, commentId, (err, existingVote) => {
 		if (err) {
-			console.error('Error adding vote:', err);
+			console.error('Error checking existing vote:', err);
 			return res.status(500).json({ message: 'Server error' });
 		}
 
-		Votes.getTotalVotes(commentId, (err, result) => {
-			if (err) {
-				console.error('Error fetching total votes:', err);
-				return res.status(500).json({ message: 'Server error' });
-			}
+		if (existingVote) {
+			if (existingVote.vote === vote) {
+				// Удаляем голос, если он такой же
+				Votes.deleteCommentVote(userId, commentId, (err) => {
+					if (err) {
+						console.error('Error deleting vote:', err);
+						return res.status(500).json({ message: 'Server error' });
+					}
 
-			const totalVotes = result[0]?.totalVotes || 0;
-			res.status(201).json({ message: 'Vote updated', voteId, totalVotes });
-		});
+					Votes.getTotalVotes(commentId, (err, result) => {
+						if (err) {
+							console.error('Error fetching total votes:', err);
+							return res.status(500).json({ message: 'Server error' });
+						}
+
+						const totalVotes = result[0]?.totalVotes || 0;
+						return res.status(200).json({ message: 'Vote removed', totalVotes });
+					});
+				});
+			} else {
+				// Заменяем голос на противоположный
+				Votes.deleteCommentVote(userId, commentId, (err) => {
+					if (err) {
+						console.error('Error deleting vote:', err);
+						return res.status(500).json({ message: 'Server error' });
+					}
+
+					Votes.addCommentVote(userId, commentId, parseInt(vote), (err, voteId) => {
+						if (err) {
+							console.error('Error adding vote:', err);
+							return res.status(500).json({ message: 'Server error' });
+						}
+
+						Votes.getTotalVotes(commentId, (err, result) => {
+							if (err) {
+								console.error('Error fetching total votes:', err);
+								return res.status(500).json({ message: 'Server error' });
+							}
+
+							const totalVotes = result[0]?.totalVotes || 0;
+							return res.status(201).json({ message: 'Vote updated', voteId, totalVotes });
+						});
+					});
+				});
+			}
+		} else {
+			// Добавляем новый голос
+			Votes.addCommentVote(userId, commentId, parseInt(vote), (err, voteId) => {
+				if (err) {
+					console.error('Error adding vote:', err);
+					return res.status(500).json({ message: 'Server error' });
+				}
+
+				Votes.getTotalVotes(commentId, (err, result) => {
+					if (err) {
+						console.error('Error fetching total votes:', err);
+						return res.status(500).json({ message: 'Server error' });
+					}
+
+					const totalVotes = result[0]?.totalVotes || 0;
+					return res.status(201).json({ message: 'Vote added', voteId, totalVotes });
+				});
+			});
+		}
 	});
 }
+
 
 module.exports = {
 	voteOnThread,

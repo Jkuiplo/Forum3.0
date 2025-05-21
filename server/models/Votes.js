@@ -40,6 +40,27 @@ const Votes = {
 			[threadId], callback
 		);
 	},
+	addCommentVote: (userId, commentId, vote, callback) => {
+		db.run(`INSERT INTO votes (vote, FK_users_id, FK_thread_id, FK_comment_id) VALUES (?, ?, NULL, ?)`,
+			[vote, userId, commentId], function (err) {
+				callback(err, this?.lastID)
+			});
+	},
+	findCommentVote: (userId, commentId, callback) => {
+	db.get(
+		`SELECT * FROM votes WHERE FK_users_id = ? AND FK_comment_id = ?`,
+		[userId, commentId],
+			callback
+		);
+	},
+
+	deleteCommentVote: (userId, commentId, callback) => {
+		db.run(
+			`DELETE FROM votes WHERE FK_users_id = ? AND FK_comment_id = ?`,
+			[userId, commentId],
+			callback
+		);
+	},
 
 };
 
