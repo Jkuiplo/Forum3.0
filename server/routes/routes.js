@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-  res.clearCookie('token', { path: '/', sameSite: 'Strict' });
+  res.clearCookie('Token', { path: '/', sameSite: 'Strict' });
   res.clearCookie('connect.sid', { path: '/', sameSite: 'Strict' }); // если используешь express-session
   res.redirect('/');
 });

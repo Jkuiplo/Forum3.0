@@ -232,7 +232,7 @@ export function renderHeader() {
 </div>
 
 
-    <div id="toast" class="toast">Это уведомление</div>
+
 
        
 

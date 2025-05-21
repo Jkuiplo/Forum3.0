@@ -1,6 +1,7 @@
 import { renderHeader } from '../components/header.js';
 
 
+
 function getCookie(name) {
   const cookies = document.cookie.split(';').map(c => c.trim());
   for (const cookie of cookies) {
@@ -100,13 +101,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
+  const toastEl = document.getElementById("toast");
+  toastEl.querySelector(".toast-body").textContent = message;
 
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000); // скрыть через 3 секунды
+  const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl); // 👈 только так
+  bsToast.show();
 }
 
 
@@ -132,31 +131,31 @@ const createPostModal = new bootstrap.Modal(document.getElementById('createPostM
 
 let isAuthenticated = false
 if(getCookie("Token")){
-	console.log("да")
-	isAuthenticated = true;
-	toggleAuthState();
+  console.log("да")
+  isAuthenticated = true;
+  toggleAuthState();
 }
 else{
-	console.log("нет")
-	isAuthenticated = false;
-	toggleAuthState();
+  console.log("нет")
+  isAuthenticated = false;
+  toggleAuthState();
 }
 function toggleAuthState() {
-	isAuthenticated = !isAuthenticated;
+  isAuthenticated = !isAuthenticated;
 
-	if (isAuthenticated) {
-		unauthorizedNav.classList.add('visually-hidden');
-		authorizedNav.classList.remove('visually-hidden');
-		if (toggleAuthBtn) {
-			toggleAuthBtn.textContent = 'Switch to Unauthorized';
-		}
-	} else {
-		unauthorizedNav.classList.remove('visually-hidden');
-		authorizedNav.classList.add('visually-hidden');
-		if (toggleAuthBtn) {
-			toggleAuthBtn.textContent = 'Switch to Authorized';
-		}
-	}
+  if (isAuthenticated) {
+    unauthorizedNav.classList.add('visually-hidden');
+    authorizedNav.classList.remove('visually-hidden');
+    if (toggleAuthBtn) {
+      toggleAuthBtn.textContent = 'Switch to Unauthorized';
+    }
+  } else {
+    unauthorizedNav.classList.remove('visually-hidden');
+    authorizedNav.classList.add('visually-hidden');
+    if (toggleAuthBtn) {
+      toggleAuthBtn.textContent = 'Switch to Authorized';
+    }
+  }
 }
 
 //  log in and sign up blya
@@ -271,57 +270,57 @@ loginForm.addEventListener('submit', async (event) => {
 
 // Initialize sidebar functionality
 function initSidebar() {
-	const sidebar = document.querySelector('.reddit-sidebar');
-	const sidebarToggle = document.querySelector('.sidebar-toggle');
-	const sidebarClose = document.querySelector('.sidebar-close');
-	const sidebarOverlay = document.querySelector('.sidebar-overlay');
+  const sidebar = document.querySelector('.reddit-sidebar');
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
+  const sidebarClose = document.querySelector('.sidebar-close');
+  const sidebarOverlay = document.querySelector('.sidebar-overlay');
 
-	if (!sidebar) return;
+  if (!sidebar) return;
 
-	// Toggle sidebar when clicking the button
-	if (sidebarToggle) {
-		sidebarToggle.addEventListener('click', () => {
-			sidebar.classList.add('active');
-			document.body.style.overflow = 'hidden'; // Prevent scrolling when sidebar is open
-		});
-	}
+  // Toggle sidebar when clicking the button
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling when sidebar is open
+    });
+  }
 
-	// Close sidebar when clicking close button
-	if (sidebarClose) {
-		sidebarClose.addEventListener('click', closeSidebar);
-	}
+  // Close sidebar when clicking close button
+  if (sidebarClose) {
+    sidebarClose.addEventListener('click', closeSidebar);
+  }
 
-	// Close sidebar when clicking overlay
-	if (sidebarOverlay) {
-		sidebarOverlay.addEventListener('click', closeSidebar);
-	}
+  // Close sidebar when clicking overlay
+  if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeSidebar);
+  }
 
-	// Close sidebar when pressing Escape key
-	document.addEventListener('keydown', (e) => {
-		if (e.key === 'Escape' && sidebar.classList.contains('active')) {
-			closeSidebar();
-		}
-	});
+  // Close sidebar when pressing Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+      closeSidebar();
+    }
+  });
 
-	function closeSidebar() {
-		sidebar.classList.remove('active');
-		document.body.style.overflow = ''; // Re-enable scrolling
-	}
+  function closeSidebar() {
+    sidebar.classList.remove('active');
+    document.body.style.overflow = ''; // Re-enable scrolling
+  }
 }
 
 // Create post button handler
 if (createPostBtn) {
-	createPostBtn.addEventListener('click', () => {
-		createPostModal.show();
-	});
+  createPostBtn.addEventListener('click', () => {
+    createPostModal.show();
+  });
 }
 
 // Google auth button handlers
 googleAuthBtns.forEach(btn => {
-	btn.addEventListener('click', () => {
-		// In a real app, this would trigger your Google auth flow
-		console.log('Google auth initiated');
-	});
+  btn.addEventListener('click', () => {
+    window.location.href = '/auth/google'
+    console.log('Google auth initiated');
+  });
 });
 
 // Initialize state
@@ -329,18 +328,18 @@ toggleAuthState();
 
 // // Event listener for demo button
 // if (toggleAuthBtn) {
-// 	toggleAuthBtn.addEventListener('click', toggleAuthState);
+//  toggleAuthBtn.addEventListener('click', toggleAuthState);
 // }
 
 // Handle auth modal tab switching based on which button opened it
 document.querySelectorAll('[data-bs-toggle="modal"]').forEach(btn => {
-	btn.addEventListener('click', function () {
-		const authType = this.getAttribute('data-auth-type');
-		if (authType === 'signup') {
-			const signupTab = new bootstrap.Tab(document.querySelector('#signup-tab'));
-			signupTab.show();
-		}
-	});
+  btn.addEventListener('click', function () {
+    const authType = this.getAttribute('data-auth-type');
+    if (authType === 'signup') {
+      const signupTab = new bootstrap.Tab(document.querySelector('#signup-tab'));
+      signupTab.show();
+    }
+  });
 });
 
 
