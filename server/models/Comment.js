@@ -12,23 +12,33 @@ const Comment = {
     },
 
     // 📌 Получить все комментарии к треду
-    getByThreadId: (threadId, callback) => {
-        const sql = `SELECT 
-        c.id,
-    u.avatar, 
-    u.username,
-    c.content, 
-    c.created_at, 
-    COALESCE(SUM(v.vote), 0) AS total_votes
-FROM comments c
-JOIN users u ON c.FK_users_id = u.id
-LEFT JOIN votes v ON v.FK_comment_id = c.id
-WHERE c.FK_thread_id = ?
-GROUP BY c.id, u.avatar, u.username, c.content, c.created_at
-ORDER BY c.created_at ASC;
-`;
-        db.all(sql, [threadId], callback);
-    },
+  getByThreadId: (threadId, callback) => {
+    const sql = `
+        SELECT 
+            c.id,
+            u.avatar, 
+            u.username,
+            c.content, 
+            c.created_at, 
+            COALESCE(cv.total_votes, 0) AS total_votes
+        FROM comments c
+        JOIN users u ON c.FK_users_id = u.id
+
+        LEFT JOIN (
+            SELECT FK_comment_id, SUM(vote) AS total_votes
+            FROM votes
+            WHERE FK_thread_id IS NULL
+            GROUP BY FK_comment_id
+        ) cv ON c.id = cv.FK_comment_id
+
+        WHERE c.FK_thread_id = ?
+        ORDER BY c.created_at ASC;
+    `;
+
+    db.all(sql, [threadId], callback);
+},
+
+
 
     // 📌 Получить один комментарий
     getById: (commentId, callback) => {

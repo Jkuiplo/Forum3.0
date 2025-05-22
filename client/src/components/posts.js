@@ -52,7 +52,7 @@ function renderSinglePost(post) {
 		<button class="action-btn comment-btn text-body">
 		  <i class="bi bi-chat text-body"></i> ${post.comment_count} Comments
 		</button>
-		<button class="action-btn share-btn text-body">
+		<button class="action-btn share-btn text-body" data-bs-toggle="modal" data-bs-target="#shareModal-${post.id}">
 		  <i class="bi bi-share text-body"></i> Share
 		</button>
 		<button class="action-btn save-btn text-body">
@@ -70,6 +70,17 @@ function renderPost(post) {
     <div class="post" data-post-id="${post.id}">
       <!-- Your post content -->
       ${renderCommentsPopup(post.id, true)} <!-- true for dark theme -->
+    </div>
+  `;
+}
+
+function renderShareMenu(postId) {
+  const postUrl = `${window.location.origin}/post/${postId}`;
+  return `
+    <div class="share-menu" data-post-id="${postId}" style="display:none; position:absolute; background:#fff; border:1px solid #ccc; padding:10px; border-radius:5px; z-index:1000;">
+      <button class="copy-link-btn" data-url="${postUrl}">Копировать ссылку</button><br>
+      <a href="https://t.me/share/url?url=${encodeURIComponent(postUrl)}" target="_blank">Поделиться в Telegram</a><br>
+      <a href="https://wa.me/?text=${encodeURIComponent(postUrl)}" target="_blank">Поделиться в WhatsApp</a>
     </div>
   `;
 }

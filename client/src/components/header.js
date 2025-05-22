@@ -55,7 +55,7 @@ export function renderHeader() {
 			<a href="#" class="nav-link user-avatar dropdown-toggle"
 			  id="profileDropdown" data-bs-toggle="dropdown"
 			  aria-expanded="false">
-			  <img src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_4.png"
+			  <img id="avatar"src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_4.png"
 			    alt="User">
 			</a>
 			<ul class="dropdown-menu dropdown-menu-end bg-body"

@@ -6,6 +6,9 @@ const commentRoutes = require("./commentRoutes");
 const voteRoutes = require("./voteRoutes");
 const avatarRoutes = require("./avatarRoutes");
 const userRoutes = require("./userRoutes");
+const communityRoutes = require("./communityRoutes");
+const postRoutes = require("./postRoutes");
+const savedRoutes = require("./savedRoutes");
 
 module.exports = (app) => {
 
@@ -16,6 +19,9 @@ module.exports = (app) => {
     app.use("/api/votes", voteRoutes);
     app.use("/api/avatar", avatarRoutes);
     app.use("/api/users", userRoutes);
+    app.use("/api/community", communityRoutes);
+    app.use("/api/bookmarks", savedRoutes);
+    
 };
 
 

@@ -53,6 +53,19 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.readAsDataURL(file);
   });
 
+
+
+
+
+
+function showToast(message) {
+  const toastEl = document.getElementById("toast");
+  toastEl.querySelector(".toast-body").textContent = message;
+
+  const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl); // 👈 только так
+  bsToast.show();
+}
+
   // Обработка отправки формы
   createPostForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -86,28 +99,16 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      alert("Пост опубликован!");
+      showToast("Пост опубликован!");
       createPostForm.reset();
       previewContainer.innerHTML = "";
       bootstrap.Modal.getInstance(document.getElementById("createPostModal")).hide();
     } catch (err) {
       console.error(err);
-      alert("Произошла ошибка при публикации поста.");
+      showToast("Произошла ошибка при публикации поста.");
     }
   });
 });
-
-
-
-
-function showToast(message) {
-  const toastEl = document.getElementById("toast");
-  toastEl.querySelector(".toast-body").textContent = message;
-
-  const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl); // 👈 только так
-  bsToast.show();
-}
-
 
 
 // Render components
@@ -134,12 +135,32 @@ if(getCookie("Token")){
   console.log("да")
   isAuthenticated = true;
   toggleAuthState();
+  getUserData().then(data =>{
+    if(data.avatar) document.getElementById('avatar').src = data.avatar;
+  });
 }
 else{
   console.log("нет")
   isAuthenticated = false;
   toggleAuthState();
 }
+
+async function getUserData() {
+  try{
+    const res = await fetch("http://localhost:5000/api/users/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    });
+    return res.json();
+  }catch(err){
+    console.log(err);
+  }
+}
+
+
 function toggleAuthState() {
   isAuthenticated = !isAuthenticated;
 
@@ -170,7 +191,7 @@ const usernameInput = signupInputs[1];
 const passwordInput = signupInputs[2];
 
 
-1
+
 // Функция отправки данных на сервер
 async function registerUser(username, email, password) {
   const response = await fetch("http://localhost:5000/api/auth/register", {

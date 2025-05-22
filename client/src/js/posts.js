@@ -1,9 +1,16 @@
+
+
+
+
 import { renderPosts } from '../components/posts.js';
 import { token } from './main.js';
 import { renderCommentsPopup, setupCommentsPopup, loadCommentsList } from '../components/comments.js';
-
+import { renderSharePopup, setupSharePopup } from '../components/sharePopup.js';
 
 const mainContent = document.getElementById('main');
+
+
+
 
 /*-------------------------------------------------------------------*/
 // Fetch posts from API
@@ -34,15 +41,23 @@ async function fetchPosts() {
 
 // Initialize posts
 async function initPosts() {
-    try {
-        const posts = await fetchPosts();
-        mainContent.innerHTML = renderPosts(posts);
-        setupPostInteractions();
-    } catch (error) {
-        console.error('Error loading posts:', error);
-        mainContent.innerHTML = '<div class="alert alert-danger">Failed to load posts</div>';
-    }
+  try {
+    const posts = await fetchPosts();
+    mainContent.innerHTML = renderPosts(posts);
+    setupPostInteractions();
+
+    posts.forEach(post => {
+      document.body.insertAdjacentHTML('beforeend', renderSharePopup(post.id, `${window.location.origin}/posts/${post.id}`));
+      setupSharePopup(post.id, `${window.location.origin}/posts/${post.id}`
+);
+    });
+    
+  } catch (error) {
+    console.error('Error loading posts:', error);
+    mainContent.innerHTML = '<div class="alert alert-danger">Failed to load posts</div>';
+  }
 }
+
 
 // Handle post interactions
 function setupPostInteractions() {

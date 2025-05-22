@@ -1,9 +1,9 @@
-import"./main-q2aOKx0S.js";function i(){return`
+import"./main-Di3R_i59.js";function n(){return`
     <div class="profile-container">
-      ${a()}
-      ${e()}
+      ${r()}
+      ${l()}
     </div>
-  `}function a(){return`
+  `}function r(){return`
     <div class="profile-header bg-body">
       <div class="cover-photo bg-secondary"></div>
       <div class="profile-info">
@@ -25,20 +25,20 @@ import"./main-q2aOKx0S.js";function i(){return`
         </div>
       </div>
     </div>
-  `}function e(){return`
+  `}function l(){return`
     <div class="profile-content bg-body">
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-3">
-            ${o()}
+            ${d()}
           </div>
           <div class="col-lg-9">
-            ${l()}
+            ${c()}
           </div>
         </div>
       </div>
     </div>
-  `}function o(){return`
+  `}function d(){return`
     <div class="profile-sidebar bg-card">
       <div class="sidebar-section about-section">
         <h3 class="sidebar-title text-body">About</h3>
@@ -63,7 +63,7 @@ import"./main-q2aOKx0S.js";function i(){return`
         </ul>
       </div>
     </div>
-  `}function l(){return`
+  `}function c(){return`
     <div class="profile-posts">
       <div class="posts-header">
         <ul class="nav nav-tabs">
@@ -79,10 +79,10 @@ import"./main-q2aOKx0S.js";function i(){return`
         </ul>
       </div>
       <div class="posts-list">
-        ${Array(5).fill(0).map((t,s)=>d(s)).join("")}
+        ${Array(5).fill(0).map((t,s)=>b(s)).join("")}
       </div>
     </div>
-  `}function d(t){return`
+  `}function b(t){return`
     <div class="post-item bg-card">
       <div class="post-votes">
         <button class="vote-btn upvote"><i class="bi bi-arrow-up"></i></button>
@@ -102,4 +102,4 @@ import"./main-q2aOKx0S.js";function i(){return`
         </div>
       </div>
     </div>
-  `}const n=document.getElementById("main");document.querySelectorAll('[data-bs-toggle="modal"]').forEach(t=>{t.addEventListener("click",function(){this.getAttribute("data-auth-type")==="signup"&&new bootstrap.Tab(document.querySelector("#signup-tab")).show()})});n.insertAdjacentHTML("beforeend",i());
+  `}const v=document.getElementById("main");document.querySelectorAll('[data-bs-toggle="modal"]').forEach(t=>{t.addEventListener("click",function(){this.getAttribute("data-auth-type")==="signup"&&new bootstrap.Tab(document.querySelector("#signup-tab")).show()})});v.insertAdjacentHTML("beforeend",n());document.addEventListener("DOMContentLoaded",async()=>{const s=window.location.pathname.split("/u/")[1],i=document.querySelector(".profile-username"),o=document.querySelector(".profile-avatar");try{const e=await fetch(`/api/users/${s}`);if(!e.ok)throw new Error("User not found");const a=await e.json();console.log(a),i.textContent=a.username,a.avatar&&(o.src=a.avatar)}catch(e){document.body.innerHTML="<h1>User not found</h1>",console.error(e)}});

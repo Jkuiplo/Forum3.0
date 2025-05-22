@@ -36,10 +36,21 @@ const Votes = {
 		);
 	},
 	getTotalVotes: (threadId, callback) => {
-		db.all(`SELECT SUM(vote) as totalVotes FROM votes WHERE FK_thread_id = ?`,
-			[threadId], callback
+		db.all(
+			`SELECT SUM(vote) as totalVotes FROM votes WHERE FK_thread_id = ? AND FK_comment_id IS NULL`,
+			[threadId],
+			callback
 		);
 	},
+
+	getCommentVotes: (commentId, callback) => {
+		db.all(
+		  `SELECT SUM(vote) FROM votes WHERE FK_comment_id = ? AND FK_thread_id IS NULL`,
+		  [commentId],
+		  callback
+		);
+	},
+
 	addCommentVote: (userId, commentId, vote, callback) => {
 		db.run(`INSERT INTO votes (vote, FK_users_id, FK_thread_id, FK_comment_id) VALUES (?, ?, NULL, ?)`,
 			[vote, userId, commentId], function (err) {

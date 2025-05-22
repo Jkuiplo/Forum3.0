@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require("express");
+const path = require("path");
 const PORT = process.env.PORT || 5000;
 const passport = require("./config/passport");
 const applyMiddleware = require("./middleware/indexMiddleware");
@@ -9,20 +10,17 @@ const applyStatic = require("./routes/static");
 
 const app = express();
 
-
-
 // Apply middleware
 applyMiddleware(app);
 
-// Apply routes
+// Static frontend
 applyStatic(app);
 
-applyRoutes(app);
-
-// Google Auth
+// Passport init
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Google Auth
 app.get(
 	"/auth/google",
 	passport.authenticate("google", {
@@ -45,5 +43,13 @@ app.get(
 		res.redirect("/");
 	}
 );
+
+// Основные маршруты (API и SPA)
+applyRoutes(app);
+
+// Обработчик 404 — всегда последним
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, '../', 'client', 'src/pages/404.html'));
+});
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

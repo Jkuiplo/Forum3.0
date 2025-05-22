@@ -1,4 +1,5 @@
-const db = require("../database"); // или откуда ты берешь доступ к базе
+const sqlite3 = require("sqlite3").verbose();
+const db = new sqlite3.Database('./database.db');
 
 exports.changeNickname = async (req, res) => {
 	const userId = req.user.id; // предполагается, что authenticate добавляет req.user
@@ -55,6 +56,9 @@ exports.toggleFollow = async (req, res) => {
 exports.getFollowersCount = async (req, res) => {
 	const userId = parseInt(req.params.id);
 
+		console.log('getFollowersCount for userId:', userId);
+
+
 	try {
 		const row = await db.get(
 			"SELECT COUNT(*) AS count FROM follows WHERE following_id = ?",
@@ -66,3 +70,21 @@ exports.getFollowersCount = async (req, res) => {
 		res.status(500).json({ error: "Ошибка сервера" });
 	}
 };
+
+// GET /api/user
+exports.getUserByUsername = (req, res) => {
+  const username = req.params.username;
+  db.get('SELECT * FROM users WHERE LOWER(username) = LOWER(?)', [username], (err, row) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Server error' });
+    }
+    if (!row) return res.status(404).json({ error: 'User not found' });
+    res.json(row);
+  });
+};
+
+exports.getMe = (req, res) => {
+	const user = req.user;
+	res.json(user);
+}

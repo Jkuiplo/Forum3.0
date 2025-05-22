@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 const app = express();
+const profileRoutes = require('./profile.js');
+
 // Роут для главной страницы
 
 router.use(express.static(path.join(__dirname, '../../', 'client', 'dist')));
@@ -27,5 +29,9 @@ router.get('/settings', (req, res) => {
 router.get('/saved', (req, res) => {
     res.sendFile(path.join(__dirname, '../../', 'client', 'dist', 'pages/saved.html'));
 });
+
+router.use('/', profileRoutes);
+
+
 
 module.exports = router;

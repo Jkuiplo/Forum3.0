@@ -106,7 +106,7 @@ function voteOnComment(req, res) {
 						return res.status(500).json({ message: 'Server error' });
 					}
 
-					Votes.getTotalVotes(commentId, (err, result) => {
+					Votes.getCommentVotes(commentId, (err, result) => {
 						if (err) {
 							console.error('Error fetching total votes:', err);
 							return res.status(500).json({ message: 'Server error' });
@@ -130,7 +130,7 @@ function voteOnComment(req, res) {
 							return res.status(500).json({ message: 'Server error' });
 						}
 
-						Votes.getTotalVotes(commentId, (err, result) => {
+						Votes.getCommentVotes(commentId, (err, result) => {
 							if (err) {
 								console.error('Error fetching total votes:', err);
 								return res.status(500).json({ message: 'Server error' });
@@ -150,7 +150,7 @@ function voteOnComment(req, res) {
 					return res.status(500).json({ message: 'Server error' });
 				}
 
-				Votes.getTotalVotes(commentId, (err, result) => {
+				Votes.getCommentVotes(commentId, (err, result) => {
 					if (err) {
 						console.error('Error fetching total votes:', err);
 						return res.status(500).json({ message: 'Server error' });
