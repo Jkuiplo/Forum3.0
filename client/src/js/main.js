@@ -179,7 +179,7 @@ function toggleAuthState() {
   }
 }
 
-//  log in and sign up blya
+//  log in and sign up bl
 
 // Получаем форму регистрации из вкладки "Sign Up"
 const signupForm = document.querySelector('#signup form');

@@ -55,7 +55,7 @@ function renderSinglePost(post) {
 		<button class="action-btn share-btn text-body" data-bs-toggle="modal" data-bs-target="#shareModal-${post.id}">
 		  <i class="bi bi-share text-body"></i> Share
 		</button>
-		<button class="action-btn save-btn text-body">
+		<button class="action-btn save-btn text-body" data-thread-id="${post.id}">
 		  <i class="bi bi-bookmark text-body"></i> Save
 		</button>
 	      </div>

@@ -1,0 +1,120 @@
+import{t as W}from"./main-Di3R_i59.js";function et(t){return t&&t.__esModule&&Object.prototype.hasOwnProperty.call(t,"default")?t.default:t}var Q={exports:{}},dt=Q.exports,st;function lt(){return st||(st=1,function(t,r){(function(a,v){t.exports=v()})(dt,function(){var a=1e3,v=6e4,k=36e5,g="millisecond",$="second",S="minute",l="hour",m="day",M="week",b="month",h="quarter",w="year",f="date",s="Invalid Date",p=/^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,O=/\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,C={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_"),ordinal:function(c){var o=["th","st","nd","rd"],e=c%100;return"["+c+(o[(e-20)%10]||o[e]||o[0])+"]"}},T=function(c,o,e){var i=String(c);return!i||i.length>=o?c:""+Array(o+1-i.length).join(e)+c},z={s:T,z:function(c){var o=-c.utcOffset(),e=Math.abs(o),i=Math.floor(e/60),n=e%60;return(o<=0?"+":"-")+T(i,2,"0")+":"+T(n,2,"0")},m:function c(o,e){if(o.date()<e.date())return-c(e,o);var i=12*(e.year()-o.year())+(e.month()-o.month()),n=o.clone().add(i,b),u=e-n<0,d=o.clone().add(i+(u?-1:1),b);return+(-(i+(e-n)/(u?n-d:d-n))||0)},a:function(c){return c<0?Math.ceil(c)||0:Math.floor(c)},p:function(c){return{M:b,y:w,w:M,d:m,D:f,h:l,m:S,s:$,ms:g,Q:h}[c]||String(c||"").toLowerCase().replace(/s$/,"")},u:function(c){return c===void 0}},x="en",E={};E[x]=C;var H="$isDayjsObject",A=function(c){return c instanceof V||!(!c||!c[H])},q=function c(o,e,i){var n;if(!o)return x;if(typeof o=="string"){var u=o.toLowerCase();E[u]&&(n=u),e&&(E[u]=e,n=u);var d=o.split("-");if(!n&&d.length>1)return c(d[0])}else{var D=o.name;E[D]=o,n=D}return!i&&n&&(x=n),n||!i&&x},L=function(c,o){if(A(c))return c.clone();var e=typeof o=="object"?o:{};return e.date=c,e.args=arguments,new V(e)},y=z;y.l=q,y.i=A,y.w=function(c,o){return L(c,{locale:o.$L,utc:o.$u,x:o.$x,$offset:o.$offset})};var V=function(){function c(e){this.$L=q(e.locale,null,!0),this.parse(e),this.$x=this.$x||e.x||{},this[H]=!0}var o=c.prototype;return o.parse=function(e){this.$d=function(i){var n=i.date,u=i.utc;if(n===null)return new Date(NaN);if(y.u(n))return new Date;if(n instanceof Date)return new Date(n);if(typeof n=="string"&&!/Z$/i.test(n)){var d=n.match(p);if(d){var D=d[2]-1||0,_=(d[7]||"0").substring(0,3);return u?new Date(Date.UTC(d[1],D,d[3]||1,d[4]||0,d[5]||0,d[6]||0,_)):new Date(d[1],D,d[3]||1,d[4]||0,d[5]||0,d[6]||0,_)}}return new Date(n)}(e),this.init()},o.init=function(){var e=this.$d;this.$y=e.getFullYear(),this.$M=e.getMonth(),this.$D=e.getDate(),this.$W=e.getDay(),this.$H=e.getHours(),this.$m=e.getMinutes(),this.$s=e.getSeconds(),this.$ms=e.getMilliseconds()},o.$utils=function(){return y},o.isValid=function(){return this.$d.toString()!==s},o.isSame=function(e,i){var n=L(e);return this.startOf(i)<=n&&n<=this.endOf(i)},o.isAfter=function(e,i){return L(e)<this.startOf(i)},o.isBefore=function(e,i){return this.endOf(i)<L(e)},o.$g=function(e,i,n){return y.u(e)?this[i]:this.set(n,e)},o.unix=function(){return Math.floor(this.valueOf()/1e3)},o.valueOf=function(){return this.$d.getTime()},o.startOf=function(e,i){var n=this,u=!!y.u(i)||i,d=y.p(e),D=function(P,Y){var I=y.w(n.$u?Date.UTC(n.$y,Y,P):new Date(n.$y,Y,P),n);return u?I:I.endOf(m)},_=function(P,Y){return y.w(n.toDate()[P].apply(n.toDate("s"),(u?[0,0,0,0]:[23,59,59,999]).slice(Y)),n)},j=this.$W,U=this.$M,B=this.$D,F="set"+(this.$u?"UTC":"");switch(d){case w:return u?D(1,0):D(31,11);case b:return u?D(1,U):D(0,U+1);case M:var N=this.$locale().weekStart||0,Z=(j<N?j+7:j)-N;return D(u?B-Z:B+(6-Z),U);case m:case f:return _(F+"Hours",0);case l:return _(F+"Minutes",1);case S:return _(F+"Seconds",2);case $:return _(F+"Milliseconds",3);default:return this.clone()}},o.endOf=function(e){return this.startOf(e,!1)},o.$set=function(e,i){var n,u=y.p(e),d="set"+(this.$u?"UTC":""),D=(n={},n[m]=d+"Date",n[f]=d+"Date",n[b]=d+"Month",n[w]=d+"FullYear",n[l]=d+"Hours",n[S]=d+"Minutes",n[$]=d+"Seconds",n[g]=d+"Milliseconds",n)[u],_=u===m?this.$D+(i-this.$W):i;if(u===b||u===w){var j=this.clone().set(f,1);j.$d[D](_),j.init(),this.$d=j.set(f,Math.min(this.$D,j.daysInMonth())).$d}else D&&this.$d[D](_);return this.init(),this},o.set=function(e,i){return this.clone().$set(e,i)},o.get=function(e){return this[y.p(e)]()},o.add=function(e,i){var n,u=this;e=Number(e);var d=y.p(i),D=function(U){var B=L(u);return y.w(B.date(B.date()+Math.round(U*e)),u)};if(d===b)return this.set(b,this.$M+e);if(d===w)return this.set(w,this.$y+e);if(d===m)return D(1);if(d===M)return D(7);var _=(n={},n[S]=v,n[l]=k,n[$]=a,n)[d]||1,j=this.$d.getTime()+e*_;return y.w(j,this)},o.subtract=function(e,i){return this.add(-1*e,i)},o.format=function(e){var i=this,n=this.$locale();if(!this.isValid())return n.invalidDate||s;var u=e||"YYYY-MM-DDTHH:mm:ssZ",d=y.z(this),D=this.$H,_=this.$m,j=this.$M,U=n.weekdays,B=n.months,F=n.meridiem,N=function(Y,I,R,G){return Y&&(Y[I]||Y(i,u))||R[I].slice(0,G)},Z=function(Y){return y.s(D%12||12,Y,"0")},P=F||function(Y,I,R){var G=Y<12?"AM":"PM";return R?G.toLowerCase():G};return u.replace(O,function(Y,I){return I||function(R){switch(R){case"YY":return String(i.$y).slice(-2);case"YYYY":return y.s(i.$y,4,"0");case"M":return j+1;case"MM":return y.s(j+1,2,"0");case"MMM":return N(n.monthsShort,j,B,3);case"MMMM":return N(B,j);case"D":return i.$D;case"DD":return y.s(i.$D,2,"0");case"d":return String(i.$W);case"dd":return N(n.weekdaysMin,i.$W,U,2);case"ddd":return N(n.weekdaysShort,i.$W,U,3);case"dddd":return U[i.$W];case"H":return String(D);case"HH":return y.s(D,2,"0");case"h":return Z(1);case"hh":return Z(2);case"a":return P(D,_,!0);case"A":return P(D,_,!1);case"m":return String(_);case"mm":return y.s(_,2,"0");case"s":return String(i.$s);case"ss":return y.s(i.$s,2,"0");case"SSS":return y.s(i.$ms,3,"0");case"Z":return d}return null}(Y)||d.replace(":","")})},o.utcOffset=function(){return 15*-Math.round(this.$d.getTimezoneOffset()/15)},o.diff=function(e,i,n){var u,d=this,D=y.p(i),_=L(e),j=(_.utcOffset()-this.utcOffset())*v,U=this-_,B=function(){return y.m(d,_)};switch(D){case w:u=B()/12;break;case b:u=B();break;case h:u=B()/3;break;case M:u=(U-j)/6048e5;break;case m:u=(U-j)/864e5;break;case l:u=U/k;break;case S:u=U/v;break;case $:u=U/a;break;default:u=U}return n?u:y.a(u)},o.daysInMonth=function(){return this.endOf(b).$D},o.$locale=function(){return E[this.$L]},o.locale=function(e,i){if(!e)return this.$L;var n=this.clone(),u=q(e,i,!0);return u&&(n.$L=u),n},o.clone=function(){return y.w(this.$d,this)},o.toDate=function(){return new Date(this.valueOf())},o.toJSON=function(){return this.isValid()?this.toISOString():null},o.toISOString=function(){return this.$d.toISOString()},o.toString=function(){return this.$d.toUTCString()},c}(),ot=V.prototype;return L.prototype=ot,[["$ms",g],["$s",$],["$m",S],["$H",l],["$W",m],["$M",b],["$y",w],["$D",f]].forEach(function(c){ot[c[1]]=function(o){return this.$g(o,c[0],c[1])}}),L.extend=function(c,o){return c.$i||(c(o,V,L),c.$i=!0),L},L.locale=q,L.isDayjs=A,L.unix=function(c){return L(1e3*c)},L.en=E[x],L.Ls=E,L.p={},L})}(Q)),Q.exports}var ft=lt();const J=et(ft);var K={exports:{}},mt=K.exports,it;function ht(){return it||(it=1,function(t,r){(function(a,v){t.exports=v()})(mt,function(){return function(a,v,k){a=a||{};var g=v.prototype,$={future:"in %s",past:"%s ago",s:"a few seconds",m:"a minute",mm:"%d minutes",h:"an hour",hh:"%d hours",d:"a day",dd:"%d days",M:"a month",MM:"%d months",y:"a year",yy:"%d years"};function S(m,M,b,h){return g.fromToBase(m,M,b,h)}k.en.relativeTime=$,g.fromToBase=function(m,M,b,h,w){for(var f,s,p,O=b.$locale().relativeTime||$,C=a.thresholds||[{l:"s",r:44,d:"second"},{l:"m",r:89},{l:"mm",r:44,d:"minute"},{l:"h",r:89},{l:"hh",r:21,d:"hour"},{l:"d",r:35},{l:"dd",r:25,d:"day"},{l:"M",r:45},{l:"MM",r:10,d:"month"},{l:"y",r:17},{l:"yy",d:"year"}],T=C.length,z=0;z<T;z+=1){var x=C[z];x.d&&(f=h?k(m).diff(b,x.d,!0):b.diff(m,x.d,!0));var E=(a.rounding||Math.round)(Math.abs(f));if(p=f>0,E<=x.r||!x.r){E<=1&&z>0&&(x=C[z-1]);var H=O[x.l];w&&(E=w(""+E)),s=typeof H=="string"?H.replace("%d",E):H(E,M,x.l,p);break}}if(M)return s;var A=p?O.future:O.past;return typeof A=="function"?A(s):A.replace("%s",s)},g.to=function(m,M){return S(m,M,this,!0)},g.from=function(m,M){return S(m,M,this)};var l=function(m){return m.$u?k.utc():k()};g.toNow=function(m){return this.to(l(this),m)},g.fromNow=function(m){return this.from(l(this),m)}}})}(K)),K.exports}var vt=ht();const $t=et(vt);var X={exports:{}},bt=X.exports,at;function pt(){return at||(at=1,function(t,r){(function(a,v){t.exports=v()})(bt,function(){var a="minute",v=/[+-]\d\d(?::?\d\d)?/g,k=/([+-]|\d\d)/g;return function(g,$,S){var l=$.prototype;S.utc=function(s){var p={date:s,utc:!0,args:arguments};return new $(p)},l.utc=function(s){var p=S(this.toDate(),{locale:this.$L,utc:!0});return s?p.add(this.utcOffset(),a):p},l.local=function(){return S(this.toDate(),{locale:this.$L,utc:!1})};var m=l.parse;l.parse=function(s){s.utc&&(this.$u=!0),this.$utils().u(s.$offset)||(this.$offset=s.$offset),m.call(this,s)};var M=l.init;l.init=function(){if(this.$u){var s=this.$d;this.$y=s.getUTCFullYear(),this.$M=s.getUTCMonth(),this.$D=s.getUTCDate(),this.$W=s.getUTCDay(),this.$H=s.getUTCHours(),this.$m=s.getUTCMinutes(),this.$s=s.getUTCSeconds(),this.$ms=s.getUTCMilliseconds()}else M.call(this)};var b=l.utcOffset;l.utcOffset=function(s,p){var O=this.$utils().u;if(O(s))return this.$u?0:O(this.$offset)?b.call(this):this.$offset;if(typeof s=="string"&&(s=function(x){x===void 0&&(x="");var E=x.match(v);if(!E)return null;var H=(""+E[0]).match(k)||["-",0,0],A=H[0],q=60*+H[1]+ +H[2];return q===0?0:A==="+"?q:-q}(s),s===null))return this;var C=Math.abs(s)<=16?60*s:s,T=this;if(p)return T.$offset=C,T.$u=s===0,T;if(s!==0){var z=this.$u?this.toDate().getTimezoneOffset():-1*this.utcOffset();(T=this.local().add(C+z,a)).$offset=C,T.$x.$localOffset=z}else T=this.utc();return T};var h=l.format;l.format=function(s){var p=s||(this.$u?"YYYY-MM-DDTHH:mm:ss[Z]":"");return h.call(this,p)},l.valueOf=function(){var s=this.$utils().u(this.$offset)?0:this.$offset+(this.$x.$localOffset||this.$d.getTimezoneOffset());return this.$d.valueOf()-6e4*s},l.isUTC=function(){return!!this.$u},l.toISOString=function(){return this.toDate().toISOString()},l.toString=function(){return this.toDate().toUTCString()};var w=l.toDate;l.toDate=function(s){return s==="s"&&this.$offset?S(this.format("YYYY-MM-DD HH:mm:ss:SSS")).toDate():w.call(this)};var f=l.diff;l.diff=function(s,p,O){if(s&&this.$u===s.$u)return f.call(this,s,p,O);var C=this.local(),T=S(s).local();return f.call(C,T,p,O)}}})}(X)),X.exports}var yt=pt();const gt=et(yt);var tt={exports:{}},wt=tt.exports,ct;function xt(){return ct||(ct=1,function(t,r){(function(a,v){t.exports=v()})(wt,function(){var a={year:0,month:1,day:2,hour:3,minute:4,second:5},v={};return function(k,g,$){var S,l=function(h,w,f){f===void 0&&(f={});var s=new Date(h),p=function(O,C){C===void 0&&(C={});var T=C.timeZoneName||"short",z=O+"|"+T,x=v[z];return x||(x=new Intl.DateTimeFormat("en-US",{hour12:!1,timeZone:O,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",timeZoneName:T}),v[z]=x),x}(w,f);return p.formatToParts(s)},m=function(h,w){for(var f=l(h,w),s=[],p=0;p<f.length;p+=1){var O=f[p],C=O.type,T=O.value,z=a[C];z>=0&&(s[z]=parseInt(T,10))}var x=s[3],E=x===24?0:x,H=s[0]+"-"+s[1]+"-"+s[2]+" "+E+":"+s[4]+":"+s[5]+":000",A=+h;return($.utc(H).valueOf()-(A-=A%1e3))/6e4},M=g.prototype;M.tz=function(h,w){h===void 0&&(h=S);var f,s=this.utcOffset(),p=this.toDate(),O=p.toLocaleString("en-US",{timeZone:h}),C=Math.round((p-new Date(O))/1e3/60),T=15*-Math.round(p.getTimezoneOffset()/15)-C;if(!Number(T))f=this.utcOffset(0,w);else if(f=$(O,{locale:this.$L}).$set("millisecond",this.$ms).utcOffset(T,!0),w){var z=f.utcOffset();f=f.add(s-z,"minute")}return f.$x.$timezone=h,f},M.offsetName=function(h){var w=this.$x.$timezone||$.tz.guess(),f=l(this.valueOf(),w,{timeZoneName:h}).find(function(s){return s.type.toLowerCase()==="timezonename"});return f&&f.value};var b=M.startOf;M.startOf=function(h,w){if(!this.$x||!this.$x.$timezone)return b.call(this,h,w);var f=$(this.format("YYYY-MM-DD HH:mm:ss:SSS"),{locale:this.$L});return b.call(f,h,w).tz(this.$x.$timezone,!0)},$.tz=function(h,w,f){var s=f&&w,p=f||w||S,O=m(+$(),p);if(typeof h!="string")return $(h).tz(p);var C=function(E,H,A){var q=E-60*H*1e3,L=m(q,A);if(H===L)return[q,H];var y=m(q-=60*(L-H)*1e3,A);return L===y?[q,L]:[E-60*Math.min(L,y)*1e3,Math.max(L,y)]}($.utc(h,s).valueOf(),O,p),T=C[0],z=C[1],x=$(T).utcOffset(z);return x.$x.$timezone=p,x},$.tz.guess=function(){return Intl.DateTimeFormat().resolvedOptions().timeZone},$.tz.setDefault=function(h){S=h}}})}(tt)),tt.exports}var Mt=xt();const St=et(Mt);J.extend($t);J.extend(gt);J.extend(St);function Dt(t=[],r=!1){return`
+	  <div class="posts-container">
+	    ${t.length>0?t.map(a=>Tt(a)).join(""):renderEmptyState(r)}
+	  </div>
+	`}function Tt(t){const r=J.utc(t.created_at).tz("Asia/Almaty").fromNow();return`
+	  <div class="post bg-body" data-post-id="${t.id}">
+	    <div class="post-votes bg-body">
+	      <button class="vote-btn upvote text-body" aria-label="Upvote">
+		<i class="bi bi-arrow-up text-body"></i>
+	      </button>
+	      <span class="vote-count text-body">${t.votes}</span>
+	      <button class="vote-btn downvote text-body" aria-label="Downvote">
+		<i class="bi bi-arrow-down text-body"></i>
+	      </button>
+	    </div>
+	    <div class="post-content bg-body">
+	      <div class="post-header">
+		<span class="post-community text-body">r/${t.community}</span>
+		<span class="post-author text-body">Posted by u/${t.author}</span>
+		<span class="post-time text-body">${r}</span>
+	      </div>
+	      <h3 class="post-title text-body">${t.title}</h3>
+	      ${t.image?`
+		<div class="post-image-container bg-body">
+		  <img src="http://localhost:5000/${t.image}" class="post-image" alt="${t.title}">
+		</div>
+	      `:""}
+	      <div class="post-text text-body">${t.content}</div>
+	      <div class="post-actions">
+		<button class="action-btn comment-btn text-body">
+		  <i class="bi bi-chat text-body"></i> ${t.comment_count} Comments
+		</button>
+		<button class="action-btn share-btn text-body" data-bs-toggle="modal" data-bs-target="#shareModal-${t.id}">
+		  <i class="bi bi-share text-body"></i> Share
+		</button>
+		<button class="action-btn save-btn text-body" data-thread-id="${t.id}">
+		  <i class="bi bi-bookmark text-body"></i> Save
+		</button>
+	      </div>
+	    </div>
+	  </div>
+	`}function Lt(t){return`
+    <div class="modal fade" id="commentsModal-${t}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content bg-body text-body">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title">Comments</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ${kt(t)}
+            <div class="comments-list mt-4">
+              ${Ot(t)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `}function kt(t){return`
+    <div class="comment-form bg-body text-body p-3 rounded">
+      <form class="add-comment-form" data-post-id="${t}">
+        <div class="form-group mb-3">
+          <textarea class="form-control bg-body text-body" rows="3" placeholder="What are your thoughts?" required></textarea>
+        </div>
+        <div class="form-actions d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary">Comment</button>
+        </div>
+      </form>
+    </div>
+  `}function Ot(t){return`<div class="comments-list mt-4" id="comments-list-${t}"></div>`}async function nt(t){const r=document.querySelector(`#comments-list-${t}`);if(r){console.log(`Loading comments for post ${t}`),r.innerHTML='<div class="text-muted">Loading comments...</div>';try{const a=await fetch(`http://localhost:5000/api/comments/${t}`);if(!a.ok)throw new Error("Failed to fetch");const v=await a.json();if(console.log(v),!Array.isArray(v))throw new Error("Invalid format");const k=v.map(g=>`
+      <div class="comment bg-body text-body p-3 mb-3 rounded border border-secondary" data-comment-id="${g.id}">
+        <div class="d-flex">
+          <img src="${g.avatar?"http://localhost:5000/"+g.avatar:"https://www.redditstatic.com/avatars/defaults/v2/avatar_default_4.png"}" 
+            alt="${g.author}" 
+            class="rounded-circle me-3" 
+            width="32" 
+            height="32">
+
+          <div class="comment-body flex-grow-1">
+            <div class="comment-header d-flex align-items-center mb-2">
+              <span class="author fw-bold me-2">${g.username}</span>
+              <span class="timestamp text-muted small">${J.utc(g.created_at).tz("Asia/Almaty").fromNow()}</span>
+            </div>
+            <div class="comment-content mb-2">${g.content}</div>
+            <div class="comment-actions d-flex align-items-center">
+              <button class="btn btn-sm btn-outline-secondary me-2 vote-btn upvote">
+                <i class="bi bi-arrow-up"></i>
+              </button>
+              <span class="vote-count me-2">${g.total_votes}</span>
+              <button class="btn btn-sm btn-outline-secondary me-3 vote-btn downvote">
+                <i class="bi bi-arrow-down"></i>
+              </button>
+              <button class="btn btn-sm btn-link text-decoration-none">Reply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join("");r.innerHTML=k||'<div class="text-muted">No comments yet.</div>',Et()}catch(a){r.innerHTML='<div class="text-danger">Failed to load comments.</div>',console.error(a)}}}function Ct(t){document.querySelectorAll(`[data-target="#commentsModal-${t}"]`).forEach(r=>{r.addEventListener("click",()=>{nt(t)})}),document.querySelectorAll(`.add-comment-form[data-post-id="${t}"]`).forEach(r=>{r.addEventListener("submit",async a=>{a.preventDefault();const v=r.querySelector("textarea"),k=v.value.trim();if(k)try{if(!(await fetch(`http://localhost:5000/api/comments/${t}`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${W}`},body:JSON.stringify({content:k})})).ok)throw new Error("Failed to post comment");v.value="",await nt(t)}catch(g){console.error("Error posting comment:",g)}})})}function Et(t){document.querySelectorAll(".comment .vote-btn").forEach(r=>{r.addEventListener("click",async function(){const a=this.closest(".comment"),v=a.dataset.commentId,k=this.classList.contains("upvote"),g=this.classList.contains("downvote"),$=a.querySelector(".vote-count");let S=parseInt($.textContent);const l=a.querySelector(".upvote"),m=a.querySelector(".downvote"),M=this.classList.contains("active");let b;M?b=0:k?b=1:g&&(b=-1);try{const h=await fetch("http://localhost:5000/api/votes/comment",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${W}`},body:JSON.stringify({commentId:v,vote:b})});if(!h.ok)throw new Error("Failed to update vote");const w=await h.json();l.classList.remove("active"),m.classList.remove("active"),M?S+=k?-1:1:(this.classList.add("active"),k?S+=m.classList.contains("active")?2:1:S-=l.classList.contains("active")?2:1),$.textContent=S}catch(h){console.error("Error updating comment vote:",h)}})})}function _t(t,r){return`
+    <div class="modal fade" id="shareModal-${t}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-body text-body">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title">Share Post</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <button class="btn btn-outline-primary w-100 mb-2" id="copyLinkBtn-${t}">
+              <i class="bi bi-clipboard"></i> Copy Link
+            </button>
+            <a href="https://t.me/share/url?url=${encodeURIComponent(r)}" target="_blank" class="btn btn-outline-info w-100 mb-2">
+              <i class="bi bi-telegram"></i> Share on Telegram
+            </a>
+            <a href="https://wa.me/?text=${encodeURIComponent(r)}" target="_blank" class="btn btn-outline-success w-100">
+              <i class="bi bi-whatsapp"></i> Share on WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `}function zt(t,r){const a=document.getElementById(`copyLinkBtn-${t}`);a&&a.addEventListener("click",()=>{navigator.clipboard.writeText(r).then(()=>{a.textContent="Copied!",setTimeout(()=>a.innerHTML='<i class="bi bi-clipboard"></i> Copy Link',1500)}).catch(()=>alert("Failed to copy link"))})}const rt="http://localhost:5000",ut=document.getElementById("main");async function jt(t){try{const r=await fetch(`${rt}/api/bookmarks/${t}`,{method:"POST",headers:{Authorization:`Bearer ${W}`}});if(r.ok)return await r.json();{const a=await r.json();console.error("Error:",a.message||"Unknown");return}}catch(r){console.error("Network error:",r.message||"Unknown error");return}}async function Ht(t){try{const r=await fetch(`${rt}/api/bookmarks/${t}`,{method:"DELETE",headers:{Authorization:`Bearer ${W}`}});if(r.ok)return await r.json();{const a=await r.json();console.error("Error:",a.message||"Unknown");return}}catch(r){console.error("Network error:",r.message||"Unknown error");return}}async function Ut(){try{const t=await fetch("http://localhost:5000/api/threads",{method:"GET",credentials:"same-origin",headers:{Authorization:`Bearer ${W}`}});if(t.ok){const r=await t.json();return console.log(r),r}else{const r=await t.json();return console.error("Error:",r.message||"Unknown error"),[]}}catch(t){return console.error("Network error:",t.message||"Unknown error"),[]}}async function At(){try{const t=await Ut();ut.innerHTML=Dt(t),Yt(),t.forEach(r=>{console.log(rt),document.body.insertAdjacentHTML("beforeend",_t(r.id,`${window.location.origin}/posts/${r.id}`)),zt(r.id,`${window.location.origin}/posts/${r.id}`)})}catch(t){console.error("Error loading posts:",t),ut.innerHTML='<div class="alert alert-danger">Failed to load posts</div>'}}function Yt(){document.querySelectorAll(".vote-btn").forEach(t=>{t.addEventListener("click",async function(){const r=this.closest(".post"),a=r.dataset.postId,v=this.classList.contains("upvote"),k=this.classList.contains("downvote"),g=r.querySelector(".vote-count");let $=parseInt(g.textContent);const S=r.querySelector(".upvote"),l=r.querySelector(".downvote"),m=this.classList.contains("active");let M;m?M=0:v?M=1:k&&(M=-1);try{const b=await fetch("http://localhost:5000/api/votes/thread",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${W}`},body:JSON.stringify({threadId:a,vote:M})});if(!b.ok)throw new Error("Failed to update vote");const h=await b.json();S.classList.remove("active"),l.classList.remove("active"),m?$+=v?-1:1:(this.classList.add("active"),v?$+=l.classList.contains("active")?2:1:$-=S.classList.contains("active")?2:1),g.textContent=$}catch(b){console.error("Error updating vote:",b)}})}),document.querySelectorAll(".comment-btn").forEach(t=>{t.addEventListener("click",async()=>{const r=t.closest(".post").dataset.postId;document.getElementById(`commentsModal-${r}`)||(document.body.insertAdjacentHTML("beforeend",Lt(r)),Ct(r)),await nt(r),new bootstrap.Modal(document.getElementById(`commentsModal-${r}`)).show()})}),document.addEventListener("click",async t=>{const r=t.target.closest(".save-btn");if(!r)return;const a=r.dataset.threadId;r.classList.contains("saved")?await Ht(a)&&(r.classList.remove("saved"),r.innerHTML='<i class="bi bi-bookmark text-body"></i> Save'):await jt(a)&&(r.classList.add("saved"),r.innerHTML='<i class="bi bi-bookmark-fill text-body"></i> Saved')})}document.addEventListener("DOMContentLoaded",At);

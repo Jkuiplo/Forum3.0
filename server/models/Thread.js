@@ -20,7 +20,7 @@ db.run(`
 
 const Thread = {
     create: (title, content, user_id, image, community = 'general', callback) => {
-    db.run(`INSERT INTO threads (title, content, user_id, image, community_id) VALUES (?, ?, ?, ?, ?)`,
+    db.run(`INSERT INTO threads (title, content, user_id, image, community) VALUES (?, ?, ?, ?, ?)`,
         [title, content, user_id, image, community], function (err) {
             callback(err, this?.lastID);
         }
@@ -28,39 +28,26 @@ const Thread = {
 },
 
 
-getAll: (callback) => {
-    db.all(`
-        SELECT 
-            t.id,
-            t.title,
-            t.content,
-            t.image,
-            t.created_at,
-            t.community_id,
-            u.username AS author,
-            COALESCE(tv.total_votes, 0) AS votes,
-            COALESCE(tc.comment_count, 0) AS comment_count
-        FROM threads t
-        JOIN users u ON t.user_id = u.id
-
-        LEFT JOIN (
-            SELECT FK_thread_id, SUM(vote) AS total_votes
-            FROM votes
-            WHERE FK_comment_id IS NULL
-            GROUP BY FK_thread_id
-        ) tv ON t.id = tv.FK_thread_id
-
-        LEFT JOIN (
-            SELECT FK_thread_id, COUNT(*) AS comment_count
-            FROM comments
-            GROUP BY FK_thread_id
-        ) tc ON t.id = tc.FK_thread_id
-
-        ORDER BY t.created_at DESC;
-    `, callback);
-},
-
-
+    getAll: (callback) => {
+        db.all(`
+            SELECT 
+                t.id,
+                t.title,
+                t.content,
+                t.image,
+                t.created_at,
+                t.community_id,
+                u.username AS author,
+                COALESCE(SUM(CASE WHEN v.vote = 1 THEN 1 WHEN v.vote = -1 THEN -1 ELSE 0 END), 0) AS votes,
+                COUNT(c.id) AS comment_count
+            FROM threads t
+            JOIN users u ON t.user_id = u.id
+            LEFT JOIN votes v ON t.id = v.FK_thread_id
+            LEFT JOIN comments c ON t.id = c.FK_thread_id
+            GROUP BY t.id
+            ORDER BY t.created_at DESC;
+        `, callback);
+    },
 
 
     getById: (id, callback) => {

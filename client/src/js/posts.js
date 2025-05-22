@@ -1,13 +1,58 @@
-
-
-
-
 import { renderPosts } from '../components/posts.js';
 import { token } from './main.js';
 import { renderCommentsPopup, setupCommentsPopup, loadCommentsList } from '../components/comments.js';
 import { renderSharePopup, setupSharePopup } from '../components/sharePopup.js';
+import { baseURL } from '../config.js'
 
 const mainContent = document.getElementById('main');
+
+
+/* ----------------------------------------------- */
+// save || bookmark logic
+async function addBookmark(threadId) {
+    try {
+        const res = await fetch(`${baseURL}/api/bookmarks/${threadId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (res.ok) {
+            return await res.json();
+        } else {
+            const error = await res.json();
+            console.error('Error:', error.message || 'Unknown');
+            return;
+        }
+
+    } catch (error) {
+        console.error('Network error:', error.message || 'Unknown error');
+        return;
+    }
+}
+async function removeBookmark(threadId) {
+    try {
+        const res = await fetch(`${baseURL}/api/bookmarks/${threadId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (res.ok) {
+            return await res.json();
+        } else {
+            const error = await res.json();
+            console.error('Error:', error.message || 'Unknown');
+            return;
+        }
+
+    } catch (error) {
+        console.error('Network error:', error.message || 'Unknown error');
+        return;
+    }
+}
 
 
 
@@ -44,9 +89,11 @@ async function initPosts() {
   try {
     const posts = await fetchPosts();
     mainContent.innerHTML = renderPosts(posts);
+
     setupPostInteractions();
 
     posts.forEach(post => {
+        console.log(baseURL)
       document.body.insertAdjacentHTML('beforeend', renderSharePopup(post.id, `${window.location.origin}/posts/${post.id}`));
       setupSharePopup(post.id, `${window.location.origin}/posts/${post.id}`
 );
@@ -131,23 +178,46 @@ function setupPostInteractions() {
 
     // Comments functionality
     document.querySelectorAll('.comment-btn').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    const postId = btn.closest('.post').dataset.postId;
+        btn.addEventListener('click', async () => {
+            const postId = btn.closest('.post').dataset.postId;
 
-    // Если модалка еще не добавлена
-    if (!document.getElementById(`commentsModal-${postId}`)) {
-      document.body.insertAdjacentHTML('beforeend', renderCommentsPopup(postId));
-      setupCommentsPopup(postId); // Подключим форму
-    }
+            // Если модалка еще не добавлена
+            if (!document.getElementById(`commentsModal-${postId}`)) {
+              document.body.insertAdjacentHTML('beforeend', renderCommentsPopup(postId));
+              setupCommentsPopup(postId); // Подключим форму
+            }
 
-    // Загружаем комментарии
-    await loadCommentsList(postId);
+            // Загружаем комментарии
+            await loadCommentsList(postId);
 
-    // Показываем модалку
-    const modal = new bootstrap.Modal(document.getElementById(`commentsModal-${postId}`));
-    modal.show();
-  });
-});
+            // Показываем модалку
+            const modal = new bootstrap.Modal(document.getElementById(`commentsModal-${postId}`));
+            modal.show();
+        });
+    });
+    document.addEventListener('click', async (event) => {
+      const btn = event.target.closest('.save-btn');
+      if (!btn) return;
+
+      const threadId = btn.dataset.threadId;
+
+      const isSaved = btn.classList.contains('saved'); // saved — это кастомный класс состояния
+
+      if (isSaved) {
+        const result = await removeBookmark(threadId);
+        if (result) {
+          btn.classList.remove('saved');
+          btn.innerHTML = `<i class="bi bi-bookmark text-body"></i> Save`;
+        }
+      } else {
+        const result = await addBookmark(threadId);
+        if (result) {
+          btn.classList.add('saved');
+          btn.innerHTML = `<i class="bi bi-bookmark-fill text-body"></i> Saved`;
+        }
+      }
+    });
+
 
 }
 

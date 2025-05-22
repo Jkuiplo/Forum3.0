@@ -21,6 +21,13 @@ const Saved = {
 			VALUES (?, ?)
 		`;
 		db.run(query, [userId, threadId], callback);
+	},
+
+	deleteBookmark: (userId, threadId, callback) => {
+		const query = `
+			DELETE FROM bookmarks WHERE FK_users_id = ? AND FK_threads_id = ?
+		`;
+		db.run(query, [userId, threadId], callback);
 	}
 };
 

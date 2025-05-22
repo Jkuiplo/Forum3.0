@@ -43,11 +43,23 @@ exports.addBookmark = (req, res) => {
 			if (err.code === 'SQLITE_CONSTRAINT') {
 				return res.status(400).json({ message: "Эта закладка уже добавлена" });
 			}
-			return res.status(500).json({ message: "Ошибка при добавлении закладки" });
+			return res.status(500).json({ message: err +"Ошибка при добавлении закладки" });
 		}
 		res.status(201).json({ message: "Закладка добавлена" });
 	});
 };
+
+exports.deleteBookmark = (req, res) => {
+	const userId = req.user.id;
+	const threadId = req.params.threadId;
+
+	Saved.deleteBookmark(userId, threadId, (err) => {
+		if(err) {
+			return res.status(500).json({ message: err + "Ошибка при удалении закладки" });
+		}
+		res.status(201).json({ message: "Закладка удалена" });
+	});
+}
 
 
 

@@ -38,7 +38,7 @@ router.post("/", authMiddleware, upload.single('image'), (req, res) => {
 // 📌 Получить все треды
 router.get("/", (req, res) => {
     Thread.getAll((err, threads) => {
-        if (err) return res.status(500).json({ message: "Ошибка сервера" });
+        if (err) return res.status(500).json({ message: err + "Ошибка сервера" });
         res.json(threads);
     });
 });
