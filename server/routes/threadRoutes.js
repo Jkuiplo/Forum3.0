@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const Thread = require("../models/Thread");
 const authMiddleware = require("../middleware/authMiddleware");
+const authenticate = require("../middleware/optionalAuth");
 const path = require("path");
 
 const router = express.Router();
@@ -29,19 +30,22 @@ router.post("/", authMiddleware, upload.single('image'), (req, res) => {
     }
 
     Thread.create(title, content, req.user.id, image, community, (err, threadId) => {
-        if (err) return res.status(500).json({ message: "Ошибка сервера" });
+        if (err) return res.status(500).json({ message: err +"Ошибка сервера" });
         res.status(201).json({ id: threadId, title, content, image, user_id: req.user.id, community });
     });
 });
 
 
 // 📌 Получить все треды
-router.get("/", (req, res) => {
-    Thread.getAll((err, threads) => {
+router.get("/", authenticate, (req, res) => {
+    const userId = req.user?.id || null;
+
+    Thread.getAll(userId, (err, threads) => {
         if (err) return res.status(500).json({ message: err + "Ошибка сервера" });
         res.json(threads);
     });
 });
+
 
 // 📌 Получить тред по ID
 router.get("/:id", (req, res) => {

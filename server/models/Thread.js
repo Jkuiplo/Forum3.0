@@ -20,7 +20,7 @@ db.run(`
 
 const Thread = {
     create: (title, content, user_id, image, community = 'general', callback) => {
-    db.run(`INSERT INTO threads (title, content, user_id, image, community) VALUES (?, ?, ?, ?, ?)`,
+    db.run(`INSERT INTO threads (title, content, user_id, image, community_id) VALUES (?, ?, ?, ?, ?)`,
         [title, content, user_id, image, community], function (err) {
             callback(err, this?.lastID);
         }
@@ -29,36 +29,48 @@ const Thread = {
 
 
 
-getAll: (callback) => {
+getAll: (userId, callback) => {
     db.all(`
-        SELECT 
-            t.id,
-            t.title,
-            t.content,
-            t.image,
-            t.created_at,
-            t.community_id,
-            u.username AS author,
-            COALESCE(tv.total_votes, 0) AS votes,
-            COALESCE(tc.comment_count, 0) AS comment_count
-        FROM threads t
-        JOIN users u ON t.user_id = u.id
+    SELECT 
+        t.id,
+        t.title,
+        t.content,
+        t.image,
+        t.created_at,
+        t.community_id,
+        u.username AS author,
+        COALESCE(tv.total_votes, 0) AS votes,
+        COALESCE(tc.comment_count, 0) AS comment_count,
 
-        LEFT JOIN (
-            SELECT FK_thread_id, SUM(vote) AS total_votes
-            FROM votes
-            WHERE FK_comment_id IS NULL
-            GROUP BY FK_thread_id
-        ) tv ON t.id = tv.FK_thread_id
+        CASE
+            WHEN b.FK_users_id IS NOT NULL THEN 1
+            ELSE 0
+        END AS is_bookmarked,
 
-        LEFT JOIN (
-            SELECT FK_thread_id, COUNT(*) AS comment_count
-            FROM comments
-            GROUP BY FK_thread_id
-        ) tc ON t.id = tc.FK_thread_id
+        v.vote AS user_vote
 
-        ORDER BY t.created_at DESC;
-    `, callback);
+    FROM threads t
+    JOIN users u ON t.user_id = u.id
+
+    LEFT JOIN (
+        SELECT FK_thread_id, SUM(vote) AS total_votes
+        FROM votes
+        WHERE FK_comment_id IS NULL
+        GROUP BY FK_thread_id
+    ) tv ON t.id = tv.FK_thread_id
+
+    LEFT JOIN (
+        SELECT FK_thread_id, COUNT(*) AS comment_count
+        FROM comments
+        GROUP BY FK_thread_id
+    ) tc ON t.id = tc.FK_thread_id
+
+    LEFT JOIN bookmarks b ON b.FK_users_id = ? AND b.FK_threads_id = t.id
+    LEFT JOIN votes v ON v.FK_users_id = ? AND v.FK_thread_id = t.id
+
+    ORDER BY t.created_at DESC;
+
+    `, [userId, userId], callback);
 },
 
     getById: (id, callback) => {

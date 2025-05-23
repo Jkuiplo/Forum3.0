@@ -1,9 +1,9 @@
-import"./main-Di3R_i59.js";function n(){return`
+import"./main-CA2nioxZ.js";function l(){return`
     <div class="profile-container">
-      ${r()}
-      ${l()}
+      ${d()}
+      ${c()}
     </div>
-  `}function r(){return`
+  `}function d(){return`
     <div class="profile-header bg-body">
       <div class="cover-photo bg-secondary"></div>
       <div class="profile-info">
@@ -12,9 +12,7 @@ import"./main-Di3R_i59.js";function n(){return`
                alt="User avatar" class="profile-avatar">
         </div>
         <div class="profile-actions">
-          <button class="btn btn-outline-secondary edit-profile-btn text-body">
-            <i class="bi bi-pencil"></i> Edit Profile
-          </button>
+
         </div>
       </div>
       <div class="profile-meta">
@@ -25,20 +23,20 @@ import"./main-Di3R_i59.js";function n(){return`
         </div>
       </div>
     </div>
-  `}function l(){return`
+  `}function c(){return`
     <div class="profile-content bg-body">
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-3">
-            ${d()}
+            ${b()}
           </div>
           <div class="col-lg-9">
-            ${c()}
+            ${v()}
           </div>
         </div>
       </div>
     </div>
-  `}function d(){return`
+  `}function b(){return`
     <div class="profile-sidebar bg-card">
       <div class="sidebar-section about-section">
         <h3 class="sidebar-title text-body">About</h3>
@@ -63,7 +61,7 @@ import"./main-Di3R_i59.js";function n(){return`
         </ul>
       </div>
     </div>
-  `}function c(){return`
+  `}function v(){return`
     <div class="profile-posts">
       <div class="posts-header">
         <ul class="nav nav-tabs">
@@ -79,10 +77,10 @@ import"./main-Di3R_i59.js";function n(){return`
         </ul>
       </div>
       <div class="posts-list">
-        ${Array(5).fill(0).map((t,s)=>b(s)).join("")}
+        ${Array(5).fill(0).map((s,e)=>u(e)).join("")}
       </div>
     </div>
-  `}function b(t){return`
+  `}function u(s){return`
     <div class="post-item bg-card">
       <div class="post-votes">
         <button class="vote-btn upvote"><i class="bi bi-arrow-up"></i></button>
@@ -91,9 +89,9 @@ import"./main-Di3R_i59.js";function n(){return`
       </div>
       <div class="post-content">
         <div class="post-meta text-body">
-          <span>Posted in r/AIUForum ${t+1} days ago</span>
+          <span>Posted in r/AIUForum ${s+1} days ago</span>
         </div>
-        <h4 class="post-title text-body">This is a sample post title #${t+1}</h4>
+        <h4 class="post-title text-body">This is a sample post title #${s+1}</h4>
         <p class="post-text text-body">This is some sample post content that would appear here in the user's profile page.</p>
         <div class="post-actions">
           <button class="action-btn text-body"><i class="bi bi-chat"></i> ${Math.floor(Math.random()*20)} Comments</button>
@@ -102,4 +100,4 @@ import"./main-Di3R_i59.js";function n(){return`
         </div>
       </div>
     </div>
-  `}const v=document.getElementById("main");document.querySelectorAll('[data-bs-toggle="modal"]').forEach(t=>{t.addEventListener("click",function(){this.getAttribute("data-auth-type")==="signup"&&new bootstrap.Tab(document.querySelector("#signup-tab")).show()})});v.insertAdjacentHTML("beforeend",n());document.addEventListener("DOMContentLoaded",async()=>{const s=window.location.pathname.split("/u/")[1],i=document.querySelector(".profile-username"),o=document.querySelector(".profile-avatar");try{const e=await fetch(`/api/users/${s}`);if(!e.ok)throw new Error("User not found");const a=await e.json();console.log(a),i.textContent=a.username,a.avatar&&(o.src=a.avatar)}catch(e){document.body.innerHTML="<h1>User not found</h1>",console.error(e)}});
+  `}const p=document.getElementById("main");document.querySelectorAll('[data-bs-toggle="modal"]').forEach(s=>{s.addEventListener("click",function(){this.getAttribute("data-auth-type")==="signup"&&new bootstrap.Tab(document.querySelector("#signup-tab")).show()})});p.insertAdjacentHTML("beforeend",l());document.addEventListener("DOMContentLoaded",async()=>{const e=window.location.pathname.split("/u/")[1],i=document.querySelector(".profile-username"),o=document.querySelector(".profile-avatar"),r=document.querySelector(".cover-photo"),n=document.querySelector(".sidebar-text");try{const a=await fetch(`/api/users/${e}`);if(!a.ok)throw new Error("User not found");const t=await a.json();console.log(t),i.textContent=t.username,t.avatar&&(o.src=t.avatar),t.banner_url&&(r.style.backgroundImage=`url('${t.banner_url}')`,t.about&&(n.textContent=t.about))}catch(a){document.body.innerHTML="<h1>User not found</h1>",console.error(a)}});

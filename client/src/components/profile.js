@@ -17,9 +17,7 @@ function renderProfileHeader() {
                alt="User avatar" class="profile-avatar">
         </div>
         <div class="profile-actions">
-          <button class="btn btn-outline-secondary edit-profile-btn text-body">
-            <i class="bi bi-pencil"></i> Edit Profile
-          </button>
+
         </div>
       </div>
       <div class="profile-meta">

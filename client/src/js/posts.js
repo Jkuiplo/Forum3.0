@@ -109,72 +109,81 @@ async function initPosts() {
 // Handle post interactions
 function setupPostInteractions() {
     // Voting functionality
-    document.querySelectorAll('.vote-btn').forEach(btn => {
-        btn.addEventListener('click', async function() {
-            const post = this.closest('.post');
-            const postId = post.dataset.postId;
-            const isUpvote = this.classList.contains('upvote');
-            const isDownvote = this.classList.contains('downvote');
+document.querySelectorAll('.vote-btn').forEach(btn => {
+    btn.addEventListener('click', async function () {
+        const post = this.closest('.post');
+        const postId = post.dataset.postId;
+        let currentVote = parseInt(post.dataset.userVote); // -1, 0, 1
 
-            const voteCountEl = post.querySelector('.vote-count');
-            let voteCount = parseInt(voteCountEl.textContent);
+        const isUpvote = this.classList.contains('upvote');
+        const isDownvote = this.classList.contains('downvote');
 
-            const upvoteBtn = post.querySelector('.upvote');
-            const downvoteBtn = post.querySelector('.downvote');
+        const voteCountEl = post.querySelector('.vote-count');
+        let voteCount = parseInt(voteCountEl.textContent);
 
-            const isCurrentlyActive = this.classList.contains('active');
-            let voteType;
+        const upvoteBtn = post.querySelector('.upvote');
+        const downvoteBtn = post.querySelector('.downvote');
+        const upvoteIcon = upvoteBtn.querySelector('i');
+        const downvoteIcon = downvoteBtn.querySelector('i');
 
-            if (isCurrentlyActive) {
-                voteType = 0; // remove vote
-            } else if (isUpvote) {
-                voteType = 1; // upvote
-            } else if (isDownvote) {
-                voteType = -1; // downvote
+        // Определяем, что хочет сделать пользователь
+        let voteType;
+        if ((isUpvote && currentVote === 1) || (isDownvote && currentVote === -1)) {
+            voteType = 0; // снятие голоса
+        } else if (isUpvote) {
+            voteType = 1;
+        } else if (isDownvote) {
+            voteType = -1;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/votes/thread`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    threadId: postId,
+                    vote: voteType
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update vote');
             }
 
-            try {
-                const response = await fetch(`http://localhost:5000/api/votes/thread`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        threadId: postId,
-                        vote: voteType
-                    })
-                });
+            // Обновляем UI
+            upvoteBtn.classList.remove('active');
+            downvoteBtn.classList.remove('active');
+            upvoteIcon.className = 'bi bi-caret-up';
+            downvoteIcon.className = 'bi bi-caret-down';
 
-                if (!response.ok) {
-                    throw new Error('Failed to update vote');
-                }
-
-                const result = await response.json();
-
-                // Update UI based on server response
-                upvoteBtn.classList.remove('active');
-                downvoteBtn.classList.remove('active');
-
-                if (isCurrentlyActive) {
-                    voteCount += isUpvote ? -1 : 1;
-                } else {
-                    this.classList.add('active');
-                    if (isUpvote) {
-                        voteCount += downvoteBtn.classList.contains('active') ? 2 : 1;
-                    } else {
-                        voteCount -= upvoteBtn.classList.contains('active') ? 2 : 1;
-                    }
-                }
-
-                voteCountEl.textContent = voteCount;
-
-            } catch (error) {
-                console.error('Error updating vote:', error);
-                // Optionally show error to user
+            if (voteType === 0) {
+                if (currentVote === 1) voteCount -= 1;
+                if (currentVote === -1) voteCount += 1;
+                post.dataset.userVote = 0;
+            } else if (voteType === 1) {
+                voteCount += (currentVote === -1 ? 2 : 1);
+                upvoteBtn.classList.add('active');
+                upvoteIcon.className = 'bi bi-caret-up-fill text-danger';
+                post.dataset.userVote = 1;
+            } else if (voteType === -1) {
+                voteCount -= (currentVote === 1 ? 2 : 1);
+                downvoteBtn.classList.add('active');
+                downvoteIcon.className = 'bi bi-caret-down-fill text-primary';
+                post.dataset.userVote = -1;
             }
-        });
+
+            voteCountEl.textContent = voteCount;
+
+        } catch (error) {
+            console.error('Error updating vote:', error);
+        }
     });
+});
+
+
 
     // Comments functionality
     document.querySelectorAll('.comment-btn').forEach(btn => {
@@ -195,28 +204,33 @@ function setupPostInteractions() {
             modal.show();
         });
     });
-    document.addEventListener('click', async (event) => {
-      const btn = event.target.closest('.save-btn');
-      if (!btn) return;
+document.addEventListener('click', async (event) => {
+  const btn = event.target.closest('.action-btn.save-btn');
+  if (!btn) return;
 
-      const threadId = btn.dataset.threadId;
+  const threadId = btn.dataset.threadId;
+  console.log('Clicked bookmark btn for threadId:', threadId);
 
-      const isSaved = btn.classList.contains('saved'); // saved — это кастомный класс состояния
+  const isSaved = btn.classList.contains('saved');
 
-      if (isSaved) {
-        const result = await removeBookmark(threadId);
-        if (result) {
-          btn.classList.remove('saved');
-          btn.innerHTML = `<i class="bi bi-bookmark text-body"></i> Save`;
-        }
-      } else {
-        const result = await addBookmark(threadId);
-        if (result) {
-          btn.classList.add('saved');
-          btn.innerHTML = `<i class="bi bi-bookmark-fill text-body"></i> Saved`;
-        }
-      }
-    });
+  if (isSaved) {
+    const result = await removeBookmark(threadId);
+    console.log('removeBookmark result:', result);
+    if (result) {
+      btn.classList.remove('saved');
+      btn.innerHTML = `<i class="bi bi-bookmark text-body"></i> Save`;
+    }
+  } else {
+    const result = await addBookmark(threadId);
+    console.log('addBookmark result:', result);
+    if (result) {
+      btn.classList.add('saved');
+      btn.innerHTML = `<i class="bi bi-bookmark-fill text-body"></i> Saved`;
+    }
+  }
+});
+
+
 
 
 }

@@ -1,3 +1,5 @@
+
+
 import { renderProfile } from '../components/profile.js';
 
 const mainContent = document.getElementById('main');
@@ -20,15 +22,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const username = pathParts[1]; // взять то, что после /u/
   const profilename = document.querySelector('.profile-username');
   const profileavatar = document.querySelector('.profile-avatar');
+  const profileBanner = document.querySelector('.cover-photo')
+  const about = document.querySelector('.sidebar-text');
 
   try {
     const res = await fetch(`/api/users/${username}`);
     if (!res.ok) throw new Error('User not found');
     const user = await res.json();
-    console.log(user)
+    console.log(user);
 
     profilename.textContent = user.username;
-    if(user.avatar) profileavatar.src = user.avatar 
+    if (user.avatar) profileavatar.src = user.avatar;
+    if (user.banner_url) {
+    profileBanner.style.backgroundImage = `url('${user.banner_url}')`;
+    if (user.about) about.textContent = user.about;
+    }
+
 
   } catch (err) {
     document.body.innerHTML = '<h1>User not found</h1>';

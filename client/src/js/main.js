@@ -1,6 +1,13 @@
 import { renderHeader } from '../components/header.js';
 
 
+function showToast(message) {
+  const toastEl = document.getElementById("toast");
+  toastEl.querySelector(".toast-body").textContent = message;
+
+  const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl); // 👈 только так
+  bsToast.show();
+}
 
 function getCookie(name) {
   const cookies = document.cookie.split(';').map(c => c.trim());
@@ -397,3 +404,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 initSidebar();
+
+
+fetch('/api/users/me', {
+  headers: {
+    'Authorization': `Bearer ${token}` // если нужен токен
+  }
+})
+  .then(res => {
+    if (!res.ok) throw new Error('Не удалось получить пользователя');
+    return res.json();
+  })
+  .then(userData => {
+    const username = userData.username;
+    if (!username) throw new Error('Имя пользователя не найдено');
+
+    const profileLink = document.getElementById('profile-link');
+    if (profileLink) {
+      profileLink.href = `/u/${encodeURIComponent(username)}`;
+    }
+  })
+  .catch(err => {
+    console.error(err);
+  });

@@ -29,7 +29,7 @@ exports.getBookmarks = (req, res) => {
 		// Получаем закладки
 		Saved.getBookmarks(user.id, (err, result) => {
 			if (err) return res.status(500).json({ message: "Ошибка при получении закладок" });
-			res.status(200).json({ message: "Закладки получены", result });
+			res.status(200).json(result);
 		});
 	});
 };
@@ -53,9 +53,11 @@ exports.deleteBookmark = (req, res) => {
 	const userId = req.user.id;
 	const threadId = req.params.threadId;
 
+console.log('Удаление закладки:', { userId, threadId });
+
 	Saved.deleteBookmark(userId, threadId, (err) => {
-		if(err) {
-			return res.status(500).json({ message: err + "Ошибка при удалении закладки" });
+		if (err) {
+			return res.status(500).json({ message: err.message || "Ошибка при удалении закладки" });
 		}
 		res.status(201).json({ message: "Закладка удалена" });
 	});

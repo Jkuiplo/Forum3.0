@@ -9,7 +9,6 @@ dayjs.extend(timezone);
 
 export default dayjs;
 
-
 export function renderPosts(posts = [], isAuthenticated = false) {
 	return `
 	  <div class="posts-container">
@@ -21,23 +20,22 @@ export function renderPosts(posts = [], isAuthenticated = false) {
 	`;
 }
 
-
 function renderSinglePost(post) {
 	const time = dayjs.utc(post.created_at).tz('Asia/Almaty').fromNow();
 	return `
-	  <div class="post bg-body" data-post-id="${post.id}">
+		<div class="post bg-body" data-post-id="${post.id}" data-user-vote="${post.user_vote}">
 	    <div class="post-votes bg-body">
 	      <button class="vote-btn upvote text-body" aria-label="Upvote">
-		<i class="bi bi-arrow-up text-body"></i>
+	        <i class="bi ${post.user_vote === 1 ? 'bi-caret-up-fill text-danger' : 'bi-caret-up'}"></i>
 	      </button>
 	      <span class="vote-count text-body">${post.votes}</span>
 	      <button class="vote-btn downvote text-body" aria-label="Downvote">
-		<i class="bi bi-arrow-down text-body"></i>
+	        <i class="bi ${post.user_vote === -1 ? 'bi-caret-down-fill text-primary' : 'bi-caret-down'}"></i>
 	      </button>
 	    </div>
 	    <div class="post-content bg-body">
 	      <div class="post-header">
-		<span class="post-community text-body">r/${post.community}</span>
+		<span class="post-community text-body">r/${post.community_id}</span>
 		<span class="post-author text-body">Posted by u/${post.author}</span>
 		<span class="post-time text-body">${time}</span>
 	      </div>
@@ -55,21 +53,23 @@ function renderSinglePost(post) {
 		<button class="action-btn share-btn text-body" data-bs-toggle="modal" data-bs-target="#shareModal-${post.id}">
 		  <i class="bi bi-share text-body"></i> Share
 		</button>
-		<button class="action-btn save-btn text-body" data-thread-id="${post.id}">
-		  <i class="bi bi-bookmark text-body"></i> Save
-		</button>
+
+${post.is_bookmarked 
+  ? `<button class="action-btn save-btn text-body saved" data-thread-id="${post.id}"><i class="bi bi-bookmark-fill text-body"></i> Saved</button>`
+  : `<button class="action-btn save-btn text-body" data-thread-id="${post.id}"><i class="bi bi-bookmark text-body"></i> Save</button>`
+}
+
+	
 	      </div>
 	    </div>
 	  </div>
 	`;
 }
 
-
 function renderPost(post) {
   return `
     <div class="post" data-post-id="${post.id}">
-      <!-- Your post content -->
-      ${renderCommentsPopup(post.id, true)} <!-- true for dark theme -->
+      ${renderCommentsPopup(post.id, true)}
     </div>
   `;
 }
@@ -85,18 +85,21 @@ function renderShareMenu(postId) {
   `;
 }
 
+function renderEmptyState(isAuthenticated, context = 'main') {
+  let message;
 
+  if (!isAuthenticated) {
+    message = 'Войдите, чтобы просматривать посты.';
+  } else {
+    if (context === 'saved') {
+      message = 'У вас пока нет закладок.';
+    } else {
+      message = 'В закладках пусто.';
+    }
+  }
 
-// function renderEmptyState(isAuthenticated) {
-// 	return `
-// 	  <div class="empty-posts bg-body text-body">
-// 	    <i class="bi bi-postcard text-body"></i>
-// 	    <h3 class="text-body">No posts yet</h3>
-// 	    <p class="text-body">Be the first to create a post in this community</p>
-// 	    ${isAuthenticated ?
-// 			'<button class="btn btn-primary create-post-btn">Create Post</button>' :
-// 			'<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal">Log In to Post</button>'
-// 		}
-// 	  </div>
-// 	`;
-// }
+  return `
+    <div class="empty-state text-body">${message}</div>
+  `;
+}
+

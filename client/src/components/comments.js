@@ -66,7 +66,7 @@ export async function loadCommentsList(postId) {
     const html = comments.map(comment => `
       <div class="comment bg-body text-body p-3 mb-3 rounded border border-secondary" data-comment-id="${comment.id}">
         <div class="d-flex">
-          <img src="${comment.avatar ? 'http://localhost:5000/' + comment.avatar : 'https://www.redditstatic.com/avatars/defaults/v2/avatar_default_4.png'}" 
+          <img src="${comment.avatar ? comment.avatar : 'https://www.redditstatic.com/avatars/defaults/v2/avatar_default_4.png'}" 
             alt="${comment.author}" 
             class="rounded-circle me-3" 
             width="32" 

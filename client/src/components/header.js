@@ -1,3 +1,10 @@
+function showToast(message) {
+  const toastEl = document.getElementById("toast");
+  toastEl.querySelector(".toast-body").textContent = message;
+
+  const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl); // 👈 только так
+  bsToast.show();
+}
 export function renderHeader() {
 
 
@@ -63,7 +70,7 @@ export function renderHeader() {
 			  <li>
 			    <h6 class="dropdown-header text-body">My Profile</h6>
 			  </li>
-			  <li><a class="dropdown-item text-body" href="/profile"><i class="bi bi-person me-2"></i>Profile</a></li>
+			  <li><a id="profile-link" class="dropdown-item text-body" href="/profile"><i class="bi bi-person me-2"></i>Profile</a></li>
 			  <li><a class="dropdown-item text-body" href="/saved"><i class="bi bi-bookmark me-2"></i>Saved</a></li>
 			  <li><a class="dropdown-item text-body" href="/settings"><i class="bi bi-gear me-2"></i>Settings</a></li>
 			  <li><hr class="dropdown-divider"></li>
